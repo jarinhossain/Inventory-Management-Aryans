@@ -1,0 +1,110 @@
+﻿@model InventoryManagementV1.Models.User
+
+@{
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+
+
+    <section class="content-header"></section>
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">User Login</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+               @using (Html.BeginForm("Index", "Login", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                        <div class="box-body">
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3">UserName<span style="color:red;">*</span> </label>
+
+                                <div class="col-md-5">
+                                    @Html.TextBoxFor(m => m.User_Name, new { @Class = "form-control", @placeholder = "User Name", @autofocus = "autofocus" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3">Password<span style="color:red;">*</span> </label>
+
+                                <div class="col-md-5">
+                                    @Html.TextBoxFor(m => m.Password, new { @Class = "form-control", @type = "password", @placeholder = "Password" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3"></label>
+
+                                <div class="col-md-5">
+                                    <button type="submit" class="btn btn-primary">Sign In</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <label class="control-label col-md-3"></label>
+
+                                <div class="col-md-5">
+                                    <label class="control-label" style="color:red;"> @ViewData["msg"]</label>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        <!-- /.box-body -->
+
+                     
+                </div>
+               
+                <!-- /.box -->
+
+            </div>
+            <!--/.col (left) -->
+           
+        </div>
+        <!-- /.row -->
+    </section>
+   
+  
+    @section scripts{
+        <script>
+    $(document).ready(function () {
+        $("form").submit(function (event) {
+            if ($("#User_Name").val() == "") {
+                event.preventDefault();
+                swal("Failed", "User Name is required", "error").then(function () {
+                    $("#User_Name").focus();
+                });
+            }
+
+            else if ($("#Password").val() == "") {
+                event.preventDefault();
+                swal("Failed", "Password is required", "error").then(function () {
+                    $("#Password").focus();
+                });
+            }
+
+
+
+        });
+        function resetfunction() {
+
+            $("#User_Name").val(""),
+           $("#Password").val("")
+
+
+        }
+        $("#reset").click(function () {
+
+            resetFunction();
+
+        });
+    });
+        </script>
+    }

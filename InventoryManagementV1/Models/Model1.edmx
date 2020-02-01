@@ -1,0 +1,623 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category_Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Color_Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Customer_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile1" Type="varchar" MaxLength="20" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile2" Type="varchar" MaxLength="20" />
+          <Property Name="Guarantor_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Guarantor_Mobile" Type="varchar" MaxLength="20" />
+          <Property Name="Guarantor_Address" Type="varchar" MaxLength="50" />
+          <Property Name="Created_By" Type="int" />
+          <Property Name="Created_On" Type="datetime" />
+          <Property Name="Updated_By" Type="int" />
+          <Property Name="Updated_On" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Job_Title" Type="varchar" MaxLength="50" />
+          <Property Name="Salary" Type="float" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Material_Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Product_No" Type="varchar" MaxLength="50" />
+          <Property Name="Product_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Product_Details" Type="varchar" MaxLength="50" />
+          <Property Name="Country_Id" Type="int" />
+          <Property Name="Is_Active" Type="bit" />
+          <Property Name="Is_Delete" Type="bit" />
+          <Property Name="Created_By" Type="int" />
+          <Property Name="Created_On" Type="datetime" />
+          <Property Name="Updated_By" Type="int" />
+          <Property Name="Updated_On" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProductQuantityMap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Color_Id" Type="int" />
+          <Property Name="Quantity" Type="float" />
+          <Property Name="Material_Id" Type="int" />
+          <Property Name="Category_Id" Type="int" />
+          <Property Name="Size_Group_Id" Type="int" />
+          <Property Name="Product_Id" Type="int" />
+          <Property Name="Price" Type="float" />
+        </EntityType>
+        <EntityType Name="SizeGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Size_Group_Range" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile_No" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Job_Id" Type="int" />
+          <Property Name="Hired_Date" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Product_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Country_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Category_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Color">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Color_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Material">
+          <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Material_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Product_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_SizeGroup">
+          <End Role="SizeGroup" Type="Self.SizeGroup" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Size_Group_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Job">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Job_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InventoryManagementModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductQuantityMap" EntityType="Self.ProductQuantityMap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SizeGroup" EntityType="Self.SizeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Category" Association="Self.FK_ProductQuantityMap_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Color" Association="Self.FK_ProductQuantityMap_Color">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Material" Association="Self.FK_ProductQuantityMap_Material">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Product" Association="Self.FK_ProductQuantityMap_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_SizeGroup" Association="Self.FK_ProductQuantityMap_SizeGroup">
+            <End Role="SizeGroup" EntitySet="SizeGroup" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Job" Association="Self.FK_User_Job">
+            <End Role="Job" EntitySet="Job" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InventoryManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Category" FromRole="Category" ToRole="ProductQuantityMap" />
+        </EntityType>
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Color_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Color" FromRole="Color" ToRole="ProductQuantityMap" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Country" FromRole="Country" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Customer_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Guarantor_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Guarantor_Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Guarantor_Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Created_By" Type="Int32" />
+          <Property Name="Created_On" Type="DateTime" Precision="3" />
+          <Property Name="Updated_By" Type="Int32" />
+          <Property Name="Updated_On" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Job_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Salary" Type="Double" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_Job" FromRole="Job" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Material_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="Material" ToRole="ProductQuantityMap" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Product_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Product_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Product_Details" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Country_Id" Type="Int32" />
+          <Property Name="Is_Active" Type="Boolean" />
+          <Property Name="Is_Delete" Type="Boolean" />
+          <Property Name="Created_By" Type="Int32" />
+          <Property Name="Created_On" Type="DateTime" Precision="3" />
+          <Property Name="Updated_By" Type="Int32" />
+          <Property Name="Updated_On" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_Product_Country" FromRole="Product" ToRole="Country" />
+          <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="Product" ToRole="ProductQuantityMap" />
+        </EntityType>
+        <EntityType Name="ProductQuantityMap">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Color_Id" Type="Int32" />
+          <Property Name="Quantity" Type="Double" />
+          <Property Name="Material_Id" Type="Int32" />
+          <Property Name="Category_Id" Type="Int32" />
+          <Property Name="Size_Group_Id" Type="Int32" />
+          <Property Name="Product_Id" Type="Int32" />
+          <Property Name="Price" Type="Double" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_ProductQuantityMap_Category" FromRole="ProductQuantityMap" ToRole="Category" />
+          <NavigationProperty Name="Color" Relationship="Self.FK_ProductQuantityMap_Color" FromRole="ProductQuantityMap" ToRole="Color" />
+          <NavigationProperty Name="Material" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="ProductQuantityMap" ToRole="Material" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
+          <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
+        </EntityType>
+        <EntityType Name="SizeGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Size_Group_Range" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="SizeGroup" ToRole="ProductQuantityMap" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Job_Id" Type="Int32" />
+          <Property Name="Hired_Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Job" Relationship="Self.FK_User_Job" FromRole="User" ToRole="Job" />
+        </EntityType>
+        <Association Name="FK_ProductQuantityMap_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Category_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Color">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Color_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Country_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Job">
+          <End Role="Job" Type="Self.Job" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="Job_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Material">
+          <End Role="Material" Type="Self.Material" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Material_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Product_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductQuantityMap_SizeGroup">
+          <End Role="SizeGroup" Type="Self.SizeGroup" Multiplicity="0..1" />
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductQuantityMap">
+              <PropertyRef Name="Size_Group_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Colors" EntityType="Self.Color" />
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Jobs" EntityType="Self.Job" />
+          <EntitySet Name="Materials" EntityType="Self.Material" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductQuantityMaps" EntityType="Self.ProductQuantityMap" />
+          <EntitySet Name="SizeGroups" EntityType="Self.SizeGroup" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_ProductQuantityMap_Category" Association="Self.FK_ProductQuantityMap_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Color" Association="Self.FK_ProductQuantityMap_Color">
+            <End Role="Color" EntitySet="Colors" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Job" Association="Self.FK_User_Job">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Material" Association="Self.FK_ProductQuantityMap_Material">
+            <End Role="Material" EntitySet="Materials" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_Product" Association="Self.FK_ProductQuantityMap_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductQuantityMap_SizeGroup" Association="Self.FK_ProductQuantityMap_SizeGroup">
+            <End Role="SizeGroup" EntitySet="SizeGroups" />
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InventoryManagementModelStoreContainer" CdmEntityContainer="DBContext">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Category_Name" ColumnName="Category_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Colors">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Color">
+              <MappingFragment StoreEntitySet="Color">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Color_Name" ColumnName="Color_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Customer_Name" ColumnName="Customer_Name" />
+                <ScalarProperty Name="Mobile1" ColumnName="Mobile1" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Mobile2" ColumnName="Mobile2" />
+                <ScalarProperty Name="Guarantor_Name" ColumnName="Guarantor_Name" />
+                <ScalarProperty Name="Guarantor_Mobile" ColumnName="Guarantor_Mobile" />
+                <ScalarProperty Name="Guarantor_Address" ColumnName="Guarantor_Address" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Updated_By" ColumnName="Updated_By" />
+                <ScalarProperty Name="Updated_On" ColumnName="Updated_On" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Job">
+              <MappingFragment StoreEntitySet="Job">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Job_Title" ColumnName="Job_Title" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Materials">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Material">
+              <MappingFragment StoreEntitySet="Material">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Material_Name" ColumnName="Material_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Product_No" ColumnName="Product_No" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="Product_Details" ColumnName="Product_Details" />
+                <ScalarProperty Name="Country_Id" ColumnName="Country_Id" />
+                <ScalarProperty Name="Is_Active" ColumnName="Is_Active" />
+                <ScalarProperty Name="Is_Delete" ColumnName="Is_Delete" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Updated_By" ColumnName="Updated_By" />
+                <ScalarProperty Name="Updated_On" ColumnName="Updated_On" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductQuantityMaps">
+            <EntityTypeMapping TypeName="InventoryManagementModel.ProductQuantityMap">
+              <MappingFragment StoreEntitySet="ProductQuantityMap">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Color_Id" ColumnName="Color_Id" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Material_Id" ColumnName="Material_Id" />
+                <ScalarProperty Name="Category_Id" ColumnName="Category_Id" />
+                <ScalarProperty Name="Size_Group_Id" ColumnName="Size_Group_Id" />
+                <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SizeGroups">
+            <EntityTypeMapping TypeName="InventoryManagementModel.SizeGroup">
+              <MappingFragment StoreEntitySet="SizeGroup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Size_Group_Range" ColumnName="Size_Group_Range" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="InventoryManagementModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Mobile_No" ColumnName="Mobile_No" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Job_Id" ColumnName="Job_Id" />
+                <ScalarProperty Name="Hired_Date" ColumnName="Hired_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
