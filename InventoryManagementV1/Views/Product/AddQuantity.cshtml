@@ -1,0 +1,146 @@
+﻿
+@model InventoryManagementV1.Models.Product
+@{
+    Layout = "~/Views/Shared/layout.cshtml";
+   
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddQuantity</title>
+</head>
+<body>
+    <div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td class="text-primary text-right" width="30%"> Product No: </td>
+                    <td style="font-weight:bold">@Model.Product_No</td>
+                </tr>
+                <tr>
+                    <td class="text-primary text-right" width="30%"> Product Name: </td>
+                    <td style="font-weight:bold">@Model.Product_Name</td>
+                </tr>
+                <tr>
+                    <td class="text-primary text-right" width="30%"> Product Details: </td>
+                    <td style="font-weight:bold">@Model.Product_Details</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <table id="productQuantityTable" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Material</th>
+                    <th>Category</th>
+                    <th>Size Group</th>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                    <th>Add Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (InventoryManagementV1.Models.ProductQuantityMap product in (IEnumerable<InventoryManagementV1.Models.ProductQuantityMap>)Model.ProductQuantityMaps)
+                {
+                    <tr>
+                        <td>
+                            @if (@product.Material_Id != null)
+                            {
+                                @product.Material.Material_Name
+                            }
+                        </td>
+                        <td>
+                            @if (@product.Category_Id != null)
+                            {
+                                @product.Category.Category_Name
+                            }
+                        </td>
+                        <td>
+                            @if (@product.Size_Group_Id != null)
+                            {
+                                @product.SizeGroup.Size_Group_Range
+                            }
+                        </td>
+                        <td>
+                            @if (@product.Color_Id != null)
+                            {
+                                @product.Color.Color_Name
+                            }
+                        </td>
+                        <td>@product.Quantity</td>
+                        <td><input type="text" value="" placeholder="add quantity" id="@product.Id" class="form-control"/></td>
+                    </tr>
+                }
+            <tbody>
+          
+        </table>
+        <div class="form-group">
+            <div class="col-md-8"></div>
+            <div class="col-md-2">
+                <input type="submit" value="Save" id="save" class="btn btn-info" />
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+@section scripts{
+<script>
+        $(document).ready(function () {
+            ////
+
+            $("#save").click(function () {
+                    event.preventDefault();
+                    //parse table
+                    var productQuantityArray = [];
+                    var trList = $('#productQuantityTable > tbody').find('tr');
+
+                    $(trList).each(function (i, el) {
+                        var tds = $(this).find('td');
+
+                        var quantityInputField = $(tds).eq(5).find("input")[0]; // get first input field in td
+                        var quantity = $(quantityInputField).val();  // get input field value
+                        var productQuantityId = $(quantityInputField).attr('id'); // get id attribute
+
+                        var obj = {
+                            Quantity: quantity,
+                            Id: productQuantityId,
+                        };
+
+                        productQuantityArray.push(obj);
+                    })
+                    console.log(productQuantityArray);
+
+                    $.ajax({
+                        url: "/Product/AddQuantity",
+                        type: "post",
+                        data:
+                       {
+                           productQuantityList: productQuantityArray,
+
+
+                       },
+                        success: function (data) {
+                            if (data == "true")
+                                swal("success", "successfully saved", "success");
+
+                            else
+                                swal("failed", data, "error");
+                            resetfunction();
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                
+
+            });
+           
+        });
+</script>
+    }

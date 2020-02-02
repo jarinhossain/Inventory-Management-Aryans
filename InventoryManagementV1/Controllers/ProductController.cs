@@ -16,6 +16,29 @@ namespace InventoryManagementV1.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult AddQuantity(int id)
+        {
+            Product product = (from pro in db.Products
+                               where pro.Id == id
+                               select pro).FirstOrDefault();
+          
+            return View(product);
+        }
+        [HttpPost]
+        public JsonResult AddQuantity(ProductQuantityMap[] productQuantityList)
+        {
+            foreach (ProductQuantityMap item in productQuantityList)
+            {
+                ProductQuantityMap pro = (from pr in db.ProductQuantityMaps
+                                          where pr.Id == item.Id
+                                          select pr).FirstOrDefault();
+                pro.Quantity = item.Quantity + pro.Quantity;
+            }
+            db.SaveChanges();
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public ActionResult Create()
         {

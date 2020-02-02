@@ -57,7 +57,7 @@
                         </div>
                         <div class="form-group">
 
-                            <label class="control-label col-md-3">Country Id</label>
+                            <label class="control-label col-md-3">Country</label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Country_Id", (List<SelectListItem>)ViewData["CountryList"], "Select Country", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
@@ -70,28 +70,28 @@
                       
                      
                         <div class="form-group">
-                            <label class="control-label col-md-3">Material Id</label>
+                            <label class="control-label col-md-3">Material</label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Material_Id", (List<SelectListItem>)ViewData["MaterialList"], "Select Material", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                            </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Category Id</label>
+                            <label class="control-label col-md-3">Category</label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Category_Id", (List<SelectListItem>)ViewData["CategoryList"], "Select Category", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Size Group Id</label>
+                            <label class="control-label col-md-3">Size Group</label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Size_Group_Id", (List<SelectListItem>)ViewData["SizeList"], "Select Size Group", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Color Id</label>
+                            <label class="control-label col-md-3">Color</label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Color_Id", (List<SelectListItem>)ViewData["ColorList"], "Select Color", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
@@ -165,26 +165,26 @@
             $("#addBtn").click(function () {
                 if ($("#Material_Id").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Material Id is required", "error").then(function () {
+                    swal("Failed", "Material is required", "error").then(function () {
                         $("#Material_Id").focus();
                     });
                 }
 
                 else if ($("#Category_Id").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Category Id is required", "error").then(function () {
+                    swal("Failed", "Category is required", "error").then(function () {
                         $("#Category_Id").focus();
                     });
                 }
                 else if ($("#Size_Group_Id").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Size Group Id is required", "error").then(function () {
+                    swal("Failed", "Size Group is required", "error").then(function () {
                         $("#Size_Group_Id").focus();
                     });
                 }
                 else if ($("#Color_Id").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Color Id is required", "error").then(function () {
+                    swal("Failed", "Color is required", "error").then(function () {
                         $("#Color_Id").focus();
                     });
                 }
@@ -255,7 +255,7 @@
 
                 else if ($("#Country_Id").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Country Id is required", "error").then(function () {
+                    swal("Failed", "Country is required", "error").then(function () {
                         $("#Country_Id").focus();
                     });
                 }
@@ -288,7 +288,7 @@
                             Size_Group_Id: sizegroupValue,
                             Color_Id: colorValue,
                             Quantity: quantity,
-                            Price:price,
+                            Price: price,
                         };
 
                         productQuantityArray.push(obj);
