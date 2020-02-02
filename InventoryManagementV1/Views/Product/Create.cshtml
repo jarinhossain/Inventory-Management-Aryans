@@ -1,6 +1,9 @@
 ﻿@model InventoryManagementV1.Models.Product
 @{
     Layout = "~/Views/Shared/layout.cshtml";
+    List<SelectListItem> Gender = new List<SelectListItem>();
+    Gender.Add(new SelectListItem() { Text = "Male" });
+    Gender.Add(new SelectListItem() { Text = "Female" });
 }
 
 <!DOCTYPE html>
@@ -45,7 +48,13 @@
                                 @Html.TextAreaFor(m => m.Product_Details, new { @Class = "form-control", @placeholder = "Product Details" })
                             </div>
                         </div>
-                      
+                        <div class="form-group">
+
+                            <label class="control-label col-md-3">Gender</label>
+                            <div class="col-md-6">
+                                @Html.DropDownList("Gender", @Gender, "Select Gender", new { @class = "form-control editor-field", @placeholder = "Select" })
+                            </div>
+                        </div>
                         <div class="form-group">
 
                             <label class="control-label col-md-3">Country Id</label>
@@ -120,23 +129,21 @@
                         </div>
                 }
 
-                <table id="productQuantityTable" class="table">
-                    <thead>
-                        <tr>
-                            <th>Material</th>
-                            <th>Category</th>
-                            <th>Size Group</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Option</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      
-                    </tbody>
-                </table>
-            </div>
+                    <table id="productQuantityTable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Category</th>
+                                <th>Size Group</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Option</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+</div>
             
             <!-- /.box -->
 
@@ -193,17 +200,21 @@
                         $("#Price").focus();
                     });
                 }
-                var row = '<tr>'
+                else {
+                    var row = '<tr>'
+                         
+                           + '<td>' + $('#Material_Id option:selected').text() + '</td>'
+                           + '<td>' + $('#Category_Id option:selected').text() + '</td>'
+                           + '<td>' + $('#Size_Group_Id option:selected').text() + '</td>'
                             + '<td>' + $('#Color_Id option:selected').text() + '</td>'
-                             + '<td>' + $('#Material_Id option:selected').text() + '</td>'
-                             + '<td>' + $('#Category_Id option:selected').text() + '</td>'
-                             + '<td>' + $('#Size_Group_Id option:selected').text() + '</td>'
-                             + '<td>' + $('#Quantity').val() + '</td>'
-                              + '<td>' + $('#Price').val() + '</td>'
-                                 + '<td>' + '<button class="deleteButton">Delete</button>' + '</td>'
-                        +'</tr>';
-                $("#productQuantityTable > tbody:last-child").append(row);
+                           + '<td>' + $('#Quantity').val() + '</td>'
+                            + '<td>' + $('#Price').val() + '</td>'
+                               + '<td>' + '<button class="deleteButton">Delete</button>' + '</td>'
+                      + '</tr>';
+                    $("#productQuantityTable > tbody:last-child").append(row);
 
+                }
+              
             });
         });
 
@@ -253,13 +264,15 @@
                     event.preventDefault();
                     //parse table
                     var productQuantityArray = [];
-                    $('#productQuantityTable > tbody').find('tr').each(function (i, el) {
+                    var trList = $('#productQuantityTable > tbody').find('tr');
+
+                    $(trList).each(function (i, el) {
                        var tds = $(this).find('td');
                       
-                        var material = $(tds).eq(1).text();
-                        var category = $(tds).eq(2).text();
-                        var sizegroup = $(tds).eq(3).text();
-                        var color = $(tds).eq(0).text();
+                        var material = $(tds).eq(0).text();
+                        var category = $(tds).eq(1).text();
+                        var sizegroup = $(tds).eq(2).text();
+                        var color = $(tds).eq(3).text();
                         var quantity =  $(tds).eq(4).text();
                         var price =  $(tds).eq(5).text();
 
@@ -270,7 +283,6 @@
                         var colorValue = $('select[name="Color_Id"] > option:contains("' + color + '")').val();
 
                         var obj = {
-                           
                             Material_Id: materialValue,
                             Category_Id: categoryValue,
                             Size_Group_Id: sizegroupValue,
@@ -292,6 +304,7 @@
                            Product_No: $("#Product_No").val(),
                            Product_Name: $("#Product_Name").val(),
                            Product_Details: $("#Product_Details").val(),
+                           Gender: $("#Gender").val(),
                            Country_Id: $("#Country_Id").val(),
                            productQuantityList: productQuantityArray,
                          
@@ -315,11 +328,17 @@
             });
             function resetfunction() {
 
-                $("#Product_No").val(""),
-               $("#Product_Name").val(""),
-                $("#Product_Details").val(""),
-               $("#Price").val(""),
-                $("#Country_Id").val("")
+                $("#Product_No").val("");
+                $("#Product_Name").val("");
+                $("#Product_Details").val("");
+                $("#Gender").val("");
+                $("#Country_Id").val("");
+                $("#Material_Id").val("");
+                $("#Category_Id").val("");
+                $("#Size_Group_Id").val("");
+                $("#Color_Id").val("");
+                $("#Quantity").val("");
+                $("#Price").val("");
 
             }
             $("#reset").click(function () {

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -67,6 +67,7 @@
           <Property Name="Product_No" Type="varchar" MaxLength="50" />
           <Property Name="Product_Name" Type="varchar" MaxLength="50" />
           <Property Name="Product_Details" Type="varchar" MaxLength="50" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" />
           <Property Name="Country_Id" Type="int" />
           <Property Name="Is_Active" Type="bit" />
           <Property Name="Is_Delete" Type="bit" />
@@ -87,6 +88,10 @@
           <Property Name="Size_Group_Id" Type="int" />
           <Property Name="Product_Id" Type="int" />
           <Property Name="Price" Type="float" />
+          <Property Name="Created_By" Type="int" />
+          <Property Name="Created_On" Type="datetime" />
+          <Property Name="Updated_By" Type="int" />
+          <Property Name="Updated_On" Type="datetime" />
         </EntityType>
         <EntityType Name="SizeGroup">
           <Key>
@@ -232,8 +237,7 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InventoryManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -313,6 +317,7 @@
           <Property Name="Updated_On" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Country" Relationship="Self.FK_Product_Country" FromRole="Product" ToRole="Country" />
           <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="Product" ToRole="ProductQuantityMap" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductQuantityMap">
           <Key>
@@ -331,6 +336,10 @@
           <NavigationProperty Name="Material" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="ProductQuantityMap" ToRole="Material" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
           <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
+          <Property Name="Created_By" Type="Int32" />
+          <Property Name="Created_On" Type="DateTime" Precision="3" />
+          <Property Name="Updated_By" Type="Int32" />
+          <Property Name="Updated_On" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SizeGroup">
           <Key>
@@ -547,6 +556,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="InventoryManagementModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Product_No" ColumnName="Product_No" />
                 <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
@@ -564,6 +574,10 @@
           <EntitySetMapping Name="ProductQuantityMaps">
             <EntityTypeMapping TypeName="InventoryManagementModel.ProductQuantityMap">
               <MappingFragment StoreEntitySet="ProductQuantityMap">
+                <ScalarProperty Name="Updated_On" ColumnName="Updated_On" />
+                <ScalarProperty Name="Updated_By" ColumnName="Updated_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Color_Id" ColumnName="Color_Id" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />

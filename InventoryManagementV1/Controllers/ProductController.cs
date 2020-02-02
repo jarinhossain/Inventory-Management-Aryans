@@ -56,12 +56,15 @@ namespace InventoryManagementV1.Controllers
 
             //db.SaveChanges();
 
-            foreach(ProductQuantityMap item in productQuantityList)
+            /// product has many ProductQuantityMap
+            foreach (ProductQuantityMap item in productQuantityList)
             {
                 product.ProductQuantityMaps.Add(item);
+                item.Created_On = DateTime.Now;
             }
-            db.Products.Add(product);
 
+            db.Products.Add(product);
+            product.Created_On = DateTime.Now;
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }

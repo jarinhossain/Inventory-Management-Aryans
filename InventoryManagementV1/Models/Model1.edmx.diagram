@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="40aa467dc3d44897a33a4a92a5fa7f57" Name="Diagram1">
-        <EntityTypeShape EntityType="InventoryManagementModel.Category" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+      <Diagram DiagramId="6d51725a7fa8409589a579c0bf623100" Name="Diagram1">
+        <EntityTypeShape EntityType="InventoryManagementModel.Category" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryManagementModel.Color" Width="1.5" PointX="3" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Country" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Country" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryManagementModel.Customer" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryManagementModel.Job" Width="1.5" PointX="5.75" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Material" Width="1.5" PointX="3" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Material" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryManagementModel.Product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.ProductQuantityMap" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.SizeGroup" Width="1.5" PointX="3" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.ProductQuantityMap" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.SizeGroup" Width="1.5" PointX="3" PointY="13.25" IsExpanded="true" />
         <EntityTypeShape EntityType="InventoryManagementModel.User" Width="1.5" PointX="8" PointY="6" IsExpanded="true" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Category" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Color" ManuallyRouted="false" />
