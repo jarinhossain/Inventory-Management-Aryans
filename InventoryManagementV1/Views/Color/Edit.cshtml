@@ -1,0 +1,98 @@
+﻿@model InventoryManagementV1.Models.Color
+@{
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+<!DOCTYPE html>
+<section class="content-header"></section>
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Color Edit</h3>
+                </div>
+                <!-- /.box-header -->
+
+                @using (Html.BeginForm("Edit", "Color", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="box-body">
+                        @Html.HiddenFor(m => m.Id)
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Color Name</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Color_Name, new { @Class = "form-control", @placeholder = "Color Name" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <input type="submit" value="Edit" class="btn btn-info" />
+                                <input type="submit" value="Reset" id="reset" class="btn btn-info" />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+            <!-- /.box -->
+
+        </div>
+        <!--/.col (left) -->
+    </div>
+    <!-- /.row -->
+</section>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                if ($("#Color_Name").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Color Name is required", "error").then(function () {
+                        $("#Color_Name").focus();
+                    });
+                }
+
+                else {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "/Color/Edit",
+                        type: "POST",
+                        data:
+                       {
+                           Id: $("#Id").val(),
+                           Color_Name: $("#Color_Name").val()
+                       },
+                        success: function (data) {
+                            if (data == "true")
+                                swal("Success", "Successfully Saved", "success");
+                            else
+                                swal("Failed", data, "error");
+                            resetfunction();
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                }
+
+            });
+            function resetfunction() {
+                $("#Color_Name").val("")
+            }
+            $("#reset").click(function () {
+                resetFunction();
+            });
+        });
+    </script>
+}
