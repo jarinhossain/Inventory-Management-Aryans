@@ -44,6 +44,13 @@
           <Property Name="Updated_By" Type="int" />
           <Property Name="Updated_On" Type="datetime" />
         </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Job">
           <Key>
             <PropertyRef Name="Id" />
@@ -67,8 +74,9 @@
           <Property Name="Product_No" Type="varchar" MaxLength="50" />
           <Property Name="Product_Name" Type="varchar" MaxLength="50" />
           <Property Name="Product_Details" Type="varchar" MaxLength="50" />
-          <Property Name="Gender" Type="varchar" MaxLength="50" />
+          <Property Name="Gender_Id" Type="int" />
           <Property Name="Country_Id" Type="int" />
+          <Property Name="Image_Path" Type="varchar" MaxLength="200" />
           <Property Name="Is_Active" Type="bit" />
           <Property Name="Is_Delete" Type="bit" />
           <Property Name="Created_By" Type="int" />
@@ -122,6 +130,18 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="Country_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Gender_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -202,6 +222,7 @@
           <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
@@ -210,6 +231,10 @@
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
             <End Role="Country" EntitySet="Country" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Gender" Association="Self.FK_Product_Gender">
+            <End Role="Gender" EntitySet="Gender" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductQuantityMap_Category" Association="Self.FK_ProductQuantityMap_Category">
@@ -263,7 +288,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Country" FromRole="Country" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="InventoryManagementModel.FK_Product_Country" FromRole="Country" ToRole="Product" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -282,6 +307,14 @@
           <Property Name="Created_On" Type="DateTime" Precision="3" />
           <Property Name="Updated_By" Type="Int32" />
           <Property Name="Updated_On" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Gender" FromRole="Gender" ToRole="Product" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -308,6 +341,7 @@
           <Property Name="Product_No" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Product_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Product_Details" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender_Id" Type="Int32" />
           <Property Name="Country_Id" Type="Int32" />
           <Property Name="Is_Active" Type="Boolean" />
           <Property Name="Is_Delete" Type="Boolean" />
@@ -315,9 +349,10 @@
           <Property Name="Created_On" Type="DateTime" Precision="3" />
           <Property Name="Updated_By" Type="Int32" />
           <Property Name="Updated_On" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Country" Relationship="Self.FK_Product_Country" FromRole="Product" ToRole="Country" />
+          <NavigationProperty Name="Gender" Relationship="Self.FK_Product_Gender" FromRole="Product" ToRole="Gender" />
           <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="Product" ToRole="ProductQuantityMap" />
-          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Country" Relationship="InventoryManagementModel.FK_Product_Country" FromRole="Product" ToRole="Country" />
+          <Property Name="Image_Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductQuantityMap">
           <Key>
@@ -331,15 +366,15 @@
           <Property Name="Size_Group_Id" Type="Int32" />
           <Property Name="Product_Id" Type="Int32" />
           <Property Name="Price" Type="Double" />
+          <Property Name="Created_By" Type="Int32" />
+          <Property Name="Created_On" Type="DateTime" Precision="3" />
+          <Property Name="Updated_By" Type="Int32" />
+          <Property Name="Updated_On" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Category" Relationship="Self.FK_ProductQuantityMap_Category" FromRole="ProductQuantityMap" ToRole="Category" />
           <NavigationProperty Name="Color" Relationship="Self.FK_ProductQuantityMap_Color" FromRole="ProductQuantityMap" ToRole="Color" />
           <NavigationProperty Name="Material" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="ProductQuantityMap" ToRole="Material" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
           <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
-          <Property Name="Created_By" Type="Int32" />
-          <Property Name="Created_On" Type="DateTime" Precision="3" />
-          <Property Name="Updated_By" Type="Int32" />
-          <Property Name="Updated_On" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SizeGroup">
           <Key>
@@ -387,15 +422,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Product_Country">
-          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+        <Association Name="FK_Product_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Country">
+            <Principal Role="Gender">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Product">
-              <PropertyRef Name="Country_Id" />
+              <PropertyRef Name="Gender_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -452,6 +487,7 @@
           <EntitySet Name="Colors" EntityType="Self.Color" />
           <EntitySet Name="Countries" EntityType="Self.Country" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Genders" EntityType="Self.Gender" />
           <EntitySet Name="Jobs" EntityType="Self.Job" />
           <EntitySet Name="Materials" EntityType="Self.Material" />
           <EntitySet Name="Products" EntityType="Self.Product" />
@@ -466,8 +502,8 @@
             <End Role="Color" EntitySet="Colors" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
-            <End Role="Country" EntitySet="Countries" />
+          <AssociationSet Name="FK_Product_Gender" Association="Self.FK_Product_Gender">
+            <End Role="Gender" EntitySet="Genders" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Job" Association="Self.FK_User_Job">
@@ -486,7 +522,23 @@
             <End Role="SizeGroup" EntitySet="SizeGroups" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
           </AssociationSet>
+          <AssociationSet Name="FK_Product_Country" Association="InventoryManagementModel.FK_Product_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Product_Country">
+          <End Type="InventoryManagementModel.Country" Role="Country" Multiplicity="0..1" />
+          <End Type="InventoryManagementModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Country_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -536,6 +588,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Jobs">
             <EntityTypeMapping TypeName="InventoryManagementModel.Job">
               <MappingFragment StoreEntitySet="Job">
@@ -556,11 +616,12 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="InventoryManagementModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Image_Path" ColumnName="Image_Path" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Product_No" ColumnName="Product_No" />
                 <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
                 <ScalarProperty Name="Product_Details" ColumnName="Product_Details" />
+                <ScalarProperty Name="Gender_Id" ColumnName="Gender_Id" />
                 <ScalarProperty Name="Country_Id" ColumnName="Country_Id" />
                 <ScalarProperty Name="Is_Active" ColumnName="Is_Active" />
                 <ScalarProperty Name="Is_Delete" ColumnName="Is_Delete" />
@@ -574,10 +635,6 @@
           <EntitySetMapping Name="ProductQuantityMaps">
             <EntityTypeMapping TypeName="InventoryManagementModel.ProductQuantityMap">
               <MappingFragment StoreEntitySet="ProductQuantityMap">
-                <ScalarProperty Name="Updated_On" ColumnName="Updated_On" />
-                <ScalarProperty Name="Updated_By" ColumnName="Updated_By" />
-                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
-                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Color_Id" ColumnName="Color_Id" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
@@ -586,6 +643,10 @@
                 <ScalarProperty Name="Size_Group_Id" ColumnName="Size_Group_Id" />
                 <ScalarProperty Name="Product_Id" ColumnName="Product_Id" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Created_On" ColumnName="Created_On" />
+                <ScalarProperty Name="Updated_By" ColumnName="Updated_By" />
+                <ScalarProperty Name="Updated_On" ColumnName="Updated_On" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

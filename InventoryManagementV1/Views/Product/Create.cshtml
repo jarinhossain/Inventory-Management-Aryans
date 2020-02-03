@@ -1,9 +1,7 @@
 ﻿@model InventoryManagementV1.Models.Product
 @{
     Layout = "~/Views/Shared/layout.cshtml";
-    List<SelectListItem> Gender = new List<SelectListItem>();
-    Gender.Add(new SelectListItem() { Text = "Male" });
-    Gender.Add(new SelectListItem() { Text = "Female" });
+   
 }
 
 <!DOCTYPE html>
@@ -52,7 +50,7 @@
 
                             <label class="control-label col-md-3">Gender</label>
                             <div class="col-md-6">
-                                @Html.DropDownList("Gender", @Gender, "Select Gender", new { @class = "form-control editor-field", @placeholder = "Select" })
+                                @Html.DropDownList("Gender_Id", (List<SelectListItem>)ViewData["GenderList"], "Select Gender", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -128,10 +126,10 @@
                             </div>
                         </div>
                 }
-
+               
                     <table id="productQuantityTable" class="table table-bordered">
                         <thead>
-                            <tr>
+                            <tr class="info">
                                 <th>Material</th>
                                 <th>Category</th>
                                 <th>Size Group</th>
@@ -143,7 +141,8 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-</div>
+                 
+                </div>
             
             <!-- /.box -->
 
@@ -158,7 +157,7 @@
     <script>
        
         $(document).ready(function () {
-            $("table").on('click', '.deleteButton', function () {
+            $("table").on('click', '.btn-primary', function () {
                 $(this).closest('tr').remove();
             });
 
@@ -209,7 +208,7 @@
                             + '<td>' + $('#Color_Id option:selected').text() + '</td>'
                            + '<td>' + $('#Quantity').val() + '</td>'
                             + '<td>' + $('#Price').val() + '</td>'
-                               + '<td>' + '<button class="deleteButton">Delete</button>' + '</td>'
+                               + '<td>' + '<button class="btn btn-primary btn-sm">Delete</button>' + '</td>'
                       + '</tr>';
                     $("#productQuantityTable > tbody:last-child").append(row);
 
@@ -304,7 +303,7 @@
                            Product_No: $("#Product_No").val(),
                            Product_Name: $("#Product_Name").val(),
                            Product_Details: $("#Product_Details").val(),
-                           Gender: $("#Gender").val(),
+                           Gender_Id: $("#Gender_Id").val(),
                            Country_Id: $("#Country_Id").val(),
                            productQuantityList: productQuantityArray,
                          
@@ -331,7 +330,7 @@
                 $("#Product_No").val("");
                 $("#Product_Name").val("");
                 $("#Product_Details").val("");
-                $("#Gender").val("");
+                $("#Gender_Id").val("");
                 $("#Country_Id").val("");
                 $("#Material_Id").val("");
                 $("#Category_Id").val("");

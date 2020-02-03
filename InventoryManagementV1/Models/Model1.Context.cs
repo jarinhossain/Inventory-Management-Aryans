@@ -29,6 +29,7 @@ namespace InventoryManagementV1.Models
         public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<Material> Materials { get; set; }
         public virtual DbSet<Product> Products { get; set; }

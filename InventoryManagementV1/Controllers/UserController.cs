@@ -67,5 +67,15 @@ namespace InventoryManagementV1.Controllers
             }
             return jo;
         }
+        [HttpGet]
+        public ActionResult List()
+        {
+            DBContext DB = new DBContext();
+
+            List<User> user = (from pro in DB.Users
+                                     select pro).ToList();
+
+            return View(user);
+        }
     }
 }

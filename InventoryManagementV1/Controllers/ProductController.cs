@@ -42,6 +42,7 @@ namespace InventoryManagementV1.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            ViewData["GenderList"] = LoadGender();
             ViewData["CountryList"] = LoadCountry();
             ViewData["ColorList"] = LoadColor();
             ViewData["MaterialList"] = LoadMaterial();
@@ -127,6 +128,18 @@ namespace InventoryManagementV1.Controllers
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
+        public List<SelectListItem> LoadGender()
+        {
+            DBContext DB = new DBContext();
+            List<Gender> genderdb = (from coun in DB.Genders
+                                       select coun).ToList();
+            List<SelectListItem> gender = new List<SelectListItem>();
+            foreach (var item in genderdb)
+            {
+                gender.Add(new SelectListItem() { Value = item.Id.ToString(), Text = item.Name });
+            }
+            return gender;
+        }
         public List<SelectListItem> LoadCountry()
         {
             DBContext DB = new DBContext();
@@ -196,6 +209,18 @@ namespace InventoryManagementV1.Controllers
 
             List<Product> product = (from pro in DB.Products
                                  select pro).ToList();
+
+            return View(product);
+        }
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+
+
+            DBContext DB = new DBContext();
+            Product product = (from u in DB.Products
+                           where u.Id == id
+                           select u).FirstOrDefault();
 
             return View(product);
         }

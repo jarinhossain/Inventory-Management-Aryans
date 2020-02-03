@@ -1,0 +1,94 @@
+﻿@model InventoryManagementV1.Models.Category
+@{
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+<!DOCTYPE html>
+<section class="content-header"></section>
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Category Create</h3>
+                </div>
+                <!-- /.box-header -->
+
+                @using (Html.BeginForm("Create", "Category", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Category Name</label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Category_Name, new { @Class = "form-control", @placeholder = "Category Name" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <input type="submit" value="Save" class="btn btn-info" />
+                                <input type="submit" value="Reset" id="reset" class="btn btn-info" />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+            <!-- /.box -->
+
+        </div>
+        <!--/.col (left) -->
+    </div>
+    <!-- /.row -->
+</section>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                if ($("#Category_Name").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Category Name is required", "error").then(function () {
+                        $("#Category_Name").focus();
+                    });
+                }
+
+                else {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "/Category/Create",
+                        type: "POST",
+                        data:
+                       {
+                           Category_Name: $("#Category_Name").val()
+                       },
+                        success: function (data) {
+                            if (data == "true")
+                                swal("Success", "Successfully Saved", "success");
+                            else
+                                swal("Failed", data, "error");
+                            resetfunction();
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                }
+
+            });
+            function resetfunction() {
+                $("#Category_Name").val("")
+            }
+            $("#reset").click(function () {
+                resetFunction();
+            });
+        });
+    </script>
+}
