@@ -17,7 +17,7 @@ namespace InventoryManagementV1.Models
         public int Id { get; set; }
         public string Customer_Name { get; set; }
         public string Mobile1 { get; set; }
-        public string Gender { get; set; }
+        public Nullable<int> Gender_Id { get; set; }
         public string Address { get; set; }
         public string Mobile2 { get; set; }
         public string Guarantor_Name { get; set; }
@@ -27,5 +27,7 @@ namespace InventoryManagementV1.Models
         public Nullable<System.DateTime> Created_On { get; set; }
         public Nullable<int> Updated_By { get; set; }
         public Nullable<System.DateTime> Updated_On { get; set; }
+    
+        public virtual Gender Gender { get; set; }
     }
 }

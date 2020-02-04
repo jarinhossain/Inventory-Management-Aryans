@@ -35,6 +35,7 @@
                             <thead>
                                 <tr class="info">
                                     <th>Category Name</th>
+                                    <th>Option</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,6 +43,8 @@
                                 {
                                     <tr>
                                         <td>@category.Category_Name</td>
+                                        <td><a href="~/Category/Edit?id=@category.Id">Edit</a></td>
+
                                     </tr>
                                 }
                             </tbody>

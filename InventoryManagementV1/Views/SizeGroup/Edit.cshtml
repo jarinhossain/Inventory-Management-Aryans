@@ -33,9 +33,7 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
                                 <input type="submit" value="Edit" class="btn btn-info" />
-                                <input type="submit" value="Reset" id="reset" class="btn btn-info" />
                             </div>
-
                         </div>
                     </div>
                 }
@@ -74,10 +72,14 @@
                        },
                         success: function (data) {
                             if (data == "true")
-                                swal("Success", "Successfully Updated", "success");
+                            {
+                                swal("Success", "Successfully Updated", "success").then(function () {
+                                    resetfunction();
+                                    document.location = '/SizeGroup/List';
+                                })
+                            }
                             else
                                 swal("Failed", data, "error");
-                            resetfunction();
                         },
                         error: function (data) {
                             alert(data)
@@ -90,9 +92,7 @@
             function resetfunction() {
                 $("#Size_Group_Range").val("")
             }
-            $("#reset").click(function () {
-                resetFunction();
-            });
+          
         });
     </script>
 }

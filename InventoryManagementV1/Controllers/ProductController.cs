@@ -96,12 +96,13 @@ namespace InventoryManagementV1.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
+            ViewData["GenderList"] = LoadGender();
             ViewData["CountryList"] = LoadCountry();
             ViewData["ColorList"] = LoadColor();
-            //ViewData["MaterialList"] = LoadMaterial();
-            //ViewData["CategoryList"] = LoadCategory();
-            //ViewData["SizeList"] = LoadSizeGroup();
-            //ViewData["ProductList"] = LoadProduct();
+            ViewData["MaterialList"] = LoadMaterial();
+            ViewData["CategoryList"] = LoadCategory();
+            ViewData["SizeList"] = LoadSizeGroup();
+           
             DBContext db = new DBContext();
             Product product = (from po in db.Products
                          where po.Id == id
@@ -109,22 +110,32 @@ namespace InventoryManagementV1.Controllers
             return View(product);
         }
         [HttpPost]
-        public JsonResult Edit(Product product)
+        public JsonResult Edit(Product product, ProductQuantityMap[] productQuantityList)
         {
-            ViewData["CountryList"] = LoadCountry();
-            ViewData["ColorList"] = LoadColor();
-            //ViewData["MaterialList"] = LoadMaterial();
-            //ViewData["CategoryList"] = LoadCategory();
-            //ViewData["SizeList"] = LoadSizeGroup();
-            //ViewData["ProductList"] = LoadProduct();
-            DBContext db = new DBContext();
+            foreach (ProductQuantityMap item in productQuantityList)
+            {
+                ProductQuantityMap pro = (from p in db.ProductQuantityMaps
+                                          where p.Id == item.Id
+                                          select p).FirstOrDefault();
+                pro.Material_Id = item.Material_Id;
+                pro.Category_Id = item.Category_Id;
+                pro.Size_Group_Id = item.Size_Group_Id;
+                pro.Color_Id = item.Color_Id;
+                pro.Quantity = item.Quantity;
+                pro.Price = item.Price;
+                product.ProductQuantityMaps.Add(pro);
+                pro.Updated_On = DateTime.Now;
+            }
+
             Product productDB = (from po in db.Products
                          where po.Id == product.Id
                          select po).FirstOrDefault();
             productDB.Product_No = product.Product_No;
             productDB.Product_Name = product.Product_Name;
             productDB.Product_Details = product.Product_Details;
+            productDB.Gender_Id = product.Gender_Id;
             productDB.Country_Id = product.Country_Id;
+            productDB.Updated_On = DateTime.Now;
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
