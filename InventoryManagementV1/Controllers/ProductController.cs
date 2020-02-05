@@ -92,7 +92,13 @@ namespace InventoryManagementV1.Controllers
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult ProductQuantityCreate(ProductQuantityMap productquantity)
+        {
+            db.ProductQuantityMaps.Add(productquantity);
+            db.SaveChanges();
+            return Json(productquantity.Id, JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -110,23 +116,9 @@ namespace InventoryManagementV1.Controllers
             return View(product);
         }
         [HttpPost]
-        public JsonResult Edit(Product product, ProductQuantityMap[] productQuantityList)
+        public JsonResult Edit(Product product)
         {
-            foreach (ProductQuantityMap item in productQuantityList)
-            {
-                ProductQuantityMap pro = (from p in db.ProductQuantityMaps
-                                          where p.Id == item.Id
-                                          select p).FirstOrDefault();
-                pro.Material_Id = item.Material_Id;
-                pro.Category_Id = item.Category_Id;
-                pro.Size_Group_Id = item.Size_Group_Id;
-                pro.Color_Id = item.Color_Id;
-                pro.Quantity = item.Quantity;
-                pro.Price = item.Price;
-                product.ProductQuantityMaps.Add(pro);
-                pro.Updated_On = DateTime.Now;
-            }
-
+           
             Product productDB = (from po in db.Products
                          where po.Id == product.Id
                          select po).FirstOrDefault();
@@ -136,6 +128,23 @@ namespace InventoryManagementV1.Controllers
             productDB.Gender_Id = product.Gender_Id;
             productDB.Country_Id = product.Country_Id;
             productDB.Updated_On = DateTime.Now;
+            db.SaveChanges();
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult ProductQuantityEdit(ProductQuantityMap product)
+        {
+
+            ProductQuantityMap productquantityDB = (from po in db.ProductQuantityMaps
+                                 where po.Id == product.Id
+                                 select po).FirstOrDefault();
+            productquantityDB.Material_Id = product.Material_Id;
+            productquantityDB.Category_Id = product.Category_Id;
+            productquantityDB.Size_Group_Id = product.Size_Group_Id;
+            productquantityDB.Color_Id = product.Color_Id;
+            productquantityDB.Quantity = product.Quantity;
+            productquantityDB.Price = product.Price;
+            productquantityDB.Updated_On = DateTime.Now;
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }

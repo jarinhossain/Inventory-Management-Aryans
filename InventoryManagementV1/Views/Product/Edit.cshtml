@@ -56,6 +56,14 @@
                                 @Html.DropDownList("Country_Id", (List<SelectListItem>)ViewData["CountryList"], "Select Country", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
+                            <div class="form-group">
+                                <div class="col-md-10"></div>
+                                <div class="col-md-2">
+                                    <input type="submit" id="saveBtn" value="Update" class="btn btn-info" />
+                                </div>
+
+                            </div>
+                      
                         <div class="box-header">
                             <h3 class="box-title"><b>Product Quantity Map Edit</b></h3>
                             <hr />
@@ -75,14 +83,12 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Size Group</label>
-
                             <div class="col-md-6">
                                 @Html.DropDownList("Size_Group_Id", (List<SelectListItem>)ViewData["SizeList"], "Select Size Group", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Color</label>
-
                             <div class="col-md-6">
                                 @Html.DropDownList("Color_Id", (List<SelectListItem>)ViewData["ColorList"], "Select Color", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
@@ -102,11 +108,14 @@
                         </div>
                        
                         <div class="form-group">
-                            <div class="col-md-3"></div>
+                            <div class="col-md-3">
+                               
+                            </div>
                             <div class="col-md-5">
-                             <input type="hidden" id="productQuantityHidden"/>
-                     <input type="button" id="updateBtn" value="Update" class="btn btn-info update" />
-                     
+                                <input type="hidden" id="productQuantityHidden" />
+                                <input type="button" id="addBtn" value="Add" class="btn btn-info" />
+                                <input type="button" id="updateBtn" value="Update" class="btn btn-info update" />
+
                             </div>
 
                         </div>
@@ -155,23 +164,16 @@
                                 </td>
                                 <td>@product.Quantity</td>
                                 <td>@product.Price</td>
-                                <td><button id="@product.Id" class="btn btn-primary btn-sm productQuantityEdit">Edit</button></td>
+                                <td>
+                                    <button id="@product.Id" class="btn btn-primary btn-sm productQuantityEdit">Edit</button>
+                                </td>
                                 @*<td><input type="text" value="" placeholder="add quantity" id="@product.Id" class="form-control" /></td>*@
                             </tr>
                         }
-                    <tbody>
+                    </tbody>
 
                 </table>
-                <div class="box-body">
-                    <div class="form-group">
-                        <div class="col-md-10"></div>
-                        <div class="col-md-2">
-                            <input type="submit" id="saveBtn" value="Save" class="btn btn-info" />
-                        </div>
-
-                    </div>
-                    </div>
-                   
+              
                 </div>
 
             <!-- /.box -->
@@ -186,6 +188,94 @@
 @section scripts{
     <script>
         $(document).ready(function () {
+            $("#addBtn").click(function () {
+               
+                if ($("#Material_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Material is required", "error").then(function () {
+                        $("#Material_Id").focus();
+                    });
+                }
+
+                else if ($("#Category_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Category is required", "error").then(function () {
+                        $("#Category_Id").focus();
+                    });
+                }
+                else if ($("#Size_Group_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Size Group is required", "error").then(function () {
+                        $("#Size_Group_Id").focus();
+                    });
+                }
+                else if ($("#Color_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Color is required", "error").then(function () {
+                        $("#Color_Id").focus();
+                    });
+                }
+                else if ($("#Quantity").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Quantity is required", "error").then(function () {
+                        $("#Quantity").focus();
+                    });
+                }
+                else if ($("#Price").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Price is required", "error").then(function () {
+                        $("#Price").focus();
+                    });
+                }
+                else {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "/Product/ProductQuantityCreate",
+                        type: "POST",
+                        data:
+                       {
+
+                           Material_Id: $("#Material_Id").val(),
+                           Category_Id: $("#Category_Id").val(),
+                           Size_Group_Id: $("#Size_Group_Id").val(),
+                           Product_Id: $("#Id").val(),
+                           Color_Id: $("#Color_Id").val(),
+                           Quantity: $("#Quantity").val(),
+                           Price: $("#Price").val(),
+                           //  productQuantityList: productQuantityArray
+                       },
+                        success: function (data) {
+                            swal("Success", "Successfully Saved", "success").then(function () {
+                               
+                                productQuantityRowCreate(data);
+                                ProductQuantityreset();
+                            })
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                    function productQuantityRowCreate(productQuantityId)
+                    {
+                        var row = '<tr>'
+
+                          + '<td>' + $('#Material_Id option:selected').text() + '</td>'
+                          + '<td>' + $('#Category_Id option:selected').text() + '</td>'
+                          + '<td>' + $('#Size_Group_Id option:selected').text() + '</td>'
+                           + '<td>' + $('#Color_Id option:selected').text() + '</td>'
+                          + '<td>' + $('#Quantity').val() + '</td>'
+                           + '<td>' + $('#Price').val() + '</td>'
+                              + '<td>' + '<button id="' + productQuantityId + '" class="btn btn-primary btn-sm productQuantityEdit">Edit</button>' + '</td>'
+                     + '</tr>';
+                        $("#productQuantityTable > tbody:last-child").append(row);
+                    }
+                   
+                }
+
+            });
+
+            //update e click krle nicer table row te id onushare update hbe + db eo update hbe.
             $("#updateBtn").click(function () {
                 var trList = $('#productQuantityTable > tbody').find('tr');
                 var hiddenFieldValue = $('#productQuantityHidden').val(); // hidden id of product quantity map
@@ -212,9 +302,40 @@
                         $(tds).eq(5).text(price);
                     }
                 });
-            });
 
-            $(".productQuantityEdit").click(function () {
+                event.preventDefault();
+                $.ajax({
+                    url: "/Product/ProductQuantityEdit",
+                    type: "POST",
+                    data:
+                   {
+                       Id: hiddenFieldValue,
+                       Material_Id: $("#Material_Id").val(),
+                       Category_Id: $("#Category_Id").val(),
+                       Size_Group_Id: $("#Size_Group_Id").val(),
+                       Color_Id: $("#Color_Id").val(),
+                       Quantity: $("#Quantity").val(),
+                       Price: $("#Price").val(),
+                       //  productQuantityList: productQuantityArray
+                   },
+                    success: function (data) {
+                        if (data == "true") {
+                            swal("Success", "Successfully Updated", "success").then(function () {
+                                ProductQuantityreset();
+                            })
+                        }
+                        else
+                            swal("Failed", data, "error");
+                    },
+                    error: function (data) {
+                        alert(data)
+                    },
+
+                })
+             
+            });
+        //table row er Edit e click krle row er data gulu id dhore form er text box show krbe.
+            $("table").on('click', '.productQuantityEdit', function () {
                 var selectedTr = $(this).closest('tr');
                 var tds = $(selectedTr).find('td');
 
@@ -228,15 +349,24 @@
                 var editButtonId = $(editButton).attr('id'); // get button id 
 
                 // set select tag's option by text
-                $("#Material_Id option:contains(" + material + ")").attr('selected', 'selected');
-                $("#Category_Id option:contains(" + category + ")").attr('selected', 'selected');
-                $("#Size_Group_Id option:contains(" + SizeGroupRange + ")").attr('selected', 'selected');
-                $("#Color_Id option:contains(" + color + ")").attr('selected', 'selected');
+                $("#Material_Id option:contains(" + material + ")").prop('selected', true);
+                $("#Category_Id option:contains(" + category + ")").prop('selected', true);
+                $("#Size_Group_Id option:contains(" + SizeGroupRange + ")").prop('selected', true);
+                $("#Color_Id option:contains(" + color + ")").prop('selected', true);
                 $("#Quantity").val(quantity);//set value by html id
                 $("#Price").val(price);
 
                 $('#productQuantityHidden').val(editButtonId)
             });
+            function ProductQuantityreset() {
+                $("#Material_Id").val("");
+                $("#Category_Id").val("");
+                $("#Size_Group_Id").val("");
+                $("#Color_Id").val("");
+                $("#Quantity").val("");
+                $("#Price").val("");
+                $("#productQuantityHidden").val("");
+            }
         });
     </script>
 
@@ -278,41 +408,41 @@
 
                 else {
                     event.preventDefault();
-                    var productQuantityArray = [];
-                    var trList = $('#productQuantityTable > tbody').find('tr');
+                    //var productQuantityArray = [];
+                    //var trList = $('#productQuantityTable > tbody').find('tr');
 
-                    $(trList).each(function (i, el) {
-                        var tds = $(this).find('td');
+                    //$(trList).each(function (i, el) {
+                    //    var tds = $(this).find('td');
 
-                        var material = $(tds).eq(0).text();
-                        var category = $(tds).eq(1).text();
-                        var sizegroup = $(tds).eq(2).text();
-                        var color = $(tds).eq(3).text();
-                        var quantity = $(tds).eq(4).text();
-                        var price = $(tds).eq(5).text();
-                        var editButton = $(tds).eq(6).find("button")[0];
-                        var editButtonId = $(editButton).attr('id');
+                    //    var material = $(tds).eq(0).text();
+                    //    var category = $(tds).eq(1).text();
+                    //    var sizegroup = $(tds).eq(2).text();
+                    //    var color = $(tds).eq(3).text();
+                    //    var quantity = $(tds).eq(4).text();
+                    //    var price = $(tds).eq(5).text();
+                    //    var editButton = $(tds).eq(6).find("button")[0];
+                    //    var editButtonId = $(editButton).attr('id');
 
 
-                        /// get value by text
-                        var materialValue = $('select[name="Material_Id"] > option:contains("' + material + '")').val();
-                        var categoryValue = $('select[name="Category_Id"] > option:contains("' + category + '")').val();
-                        var sizegroupValue = $('select[name="Size_Group_Id"] > option:contains("' + sizegroup + '")').val();
-                        var colorValue = $('select[name="Color_Id"] > option:contains("' + color + '")').val();
+                    //    /// get value by text
+                    //    var materialValue = $('select[name="Material_Id"] > option:contains("' + material + '")').val();
+                    //    var categoryValue = $('select[name="Category_Id"] > option:contains("' + category + '")').val();
+                    //    var sizegroupValue = $('select[name="Size_Group_Id"] > option:contains("' + sizegroup + '")').val();
+                    //    var colorValue = $('select[name="Color_Id"] > option:contains("' + color + '")').val();
 
-                        var obj = {
-                            Material_Id: materialValue,
-                            Category_Id: categoryValue,
-                            Size_Group_Id: sizegroupValue,
-                            Color_Id: colorValue,
-                            Quantity: quantity,
-                            Price: price,
-                            Id: editButtonId
-                        };
+                    //    var obj = {
+                    //        Material_Id: materialValue,
+                    //        Category_Id: categoryValue,
+                    //        Size_Group_Id: sizegroupValue,
+                    //        Color_Id: colorValue,
+                    //        Quantity: quantity,
+                    //        Price: price,
+                    //        Id: editButtonId
+                    //    };
 
-                        productQuantityArray.push(obj);
-                    })
-                    console.log(productQuantityArray);
+                    //    productQuantityArray.push(obj);
+                    //})
+                    //console.log(productQuantityArray);
                     $.ajax({
                         url: "/Product/Edit",
                         type: "POST",
@@ -324,14 +454,13 @@
                            Product_Details: $("#Product_Details").val(),
                            Gender_Id: $("#Gender_Id").val(),
                            Country_Id: $("#Country_Id").val(),
-                           productQuantityList: productQuantityArray
+                         //  productQuantityList: productQuantityArray
                        },
                         success: function (data) {
                             if (data == "true")
                             {
                                 swal("Success", "Successfully Updated", "success").then(function () {
                                     resetfunction();
-                                    document.location = '/Product/Search';
                                 })
                             }
                             else
@@ -345,14 +474,13 @@
                 }
 
             });
-            function resetfunction() {
 
+            function resetfunction() {
                 $("#Product_No").val("");
                 $("#Product_Name").val("");
                 $("#Product_Details").val("");
                 $("#Gender_Id").val("");
                 $("#Country_Id").val("")
-
             }
         });
     </script>
