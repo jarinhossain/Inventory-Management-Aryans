@@ -29,33 +29,33 @@
                             <hr />
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Product No</label>
+                            <label class="control-label col-md-3">Product No<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Product_No, new { @Class = "form-control", @placeholder = "Product No" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Product Name</label>
+                            <label class="control-label col-md-3">Product Name<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Product_Name, new { @Class = "form-control", @placeholder = "Product Name" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Product Details</label>
+                            <label class="control-label col-md-3">Product Details<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextAreaFor(m => m.Product_Details, new { @Class = "form-control", @placeholder = "Product Details" })
                             </div>
                         </div>
                         <div class="form-group">
 
-                            <label class="control-label col-md-3">Gender</label>
+                            <label class="control-label col-md-3">Gender<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Gender_Id", (List<SelectListItem>)ViewData["GenderList"], "Select Gender", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
 
-                            <label class="control-label col-md-3">Country</label>
+                            <label class="control-label col-md-3">Country<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Country_Id", (List<SelectListItem>)ViewData["CountryList"], "Select Country", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
@@ -68,53 +68,46 @@
                       
                      
                         <div class="form-group">
-                            <label class="control-label col-md-3">Material</label>
+                            <label class="control-label col-md-3">Material<span style="color:red;">*</span></label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Material_Id", (List<SelectListItem>)ViewData["MaterialList"], "Select Material", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                            </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Category</label>
+                            <label class="control-label col-md-3">Category<span style="color:red;">*</span></label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Category_Id", (List<SelectListItem>)ViewData["CategoryList"], "Select Category", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Size Group</label>
+                            <label class="control-label col-md-3">Size Group<span style="color:red;">*</span></label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Size_Group_Id", (List<SelectListItem>)ViewData["SizeList"], "Select Size Group", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Color</label>
+                            <label class="control-label col-md-3">Color<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Color_Id", (List<SelectListItem>)ViewData["ColorList"], "Select Color", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
 
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Quantity</label>
+                            <label class="control-label col-md-3">Quantity<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBox("Quantity", null, new { @Class = "form-control", @placeholder = "Quantity" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Price</label>
+                            <label class="control-label col-md-3">Price<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBox("Price", null, new { @Class = "form-control", @placeholder = "price" })
                             </div>
                         </div>
                      
-                            @*<div class="form-group">
-                <label class="control-label col-md-3">Hired date</label>
-                <div class="col-md-6">
-                    @Html.TextBoxFor(m => m.Hired_Date, "{0:dd/MM/yyyy}", new { @class = "datefield form-control", @placeholder = "dd/MM/yyyy" })
-
-                </div>
-            </div>*@
                             <div class="form-group">
                                 <div class="col-md-3"></div>
                                 <div class="col-md-5">
@@ -201,7 +194,6 @@
                 }
                 else {
                     var row = '<tr>'
-                         
                            + '<td>' + $('#Material_Id option:selected').text() + '</td>'
                            + '<td>' + $('#Category_Id option:selected').text() + '</td>'
                            + '<td>' + $('#Size_Group_Id option:selected').text() + '</td>'
@@ -211,7 +203,6 @@
                                + '<td>' + '<button class="btn btn-primary btn-sm">Delete</button>' + '</td>'
                       + '</tr>';
                     $("#productQuantityTable > tbody:last-child").append(row);
-
                 }
               
             });
@@ -245,10 +236,10 @@
                     });
                 }
 
-                else if ($("#Price").val() == "") {
+                else if ($("#Gender_Id").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Price is required", "error").then(function () {
-                        $("#Price").focus();
+                    swal("Failed", "Gender Id is required", "error").then(function () {
+                        $("#Gender_Id").focus();
                     });
                 }
 

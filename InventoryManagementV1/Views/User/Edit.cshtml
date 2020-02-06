@@ -24,37 +24,37 @@
                         @Html.HiddenFor(m => m.Id)
                         <div class="box-body">
                             <div class="form-group">
-                                <label class="control-label col-md-3">User Name</label>
+                                <label class="control-label col-md-3">User Name<span style="color:red;">*</span></label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.User_Name, new { @Class = "form-control", @placeholder = "User Name" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Password</label>
+                                <label class="control-label col-md-3">Password<span style="color:red;">*</span></label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.Password, new { @Class = "form-control", @type = "password", @placeholder = "Password" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Mobile No</label>
+                                <label class="control-label col-md-3">Mobile No<span style="color:red;">*</span></label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.Mobile_No, new { @Class = "form-control", @placeholder = "Mobile No" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Email</label>
+                                <label class="control-label col-md-3">Email<span style="color:red;">*</span></label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.Email, new { @Class = "form-control", @placeholder = "Email" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Address</label>
+                                <label class="control-label col-md-3">Address<span style="color:red;">*</span></label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.Address, new { @Class = "form-control", @placeholder = "Address" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Job Id</label>
+                                <label class="control-label col-md-3">Job<span style="color:red;">*</span></label>
 
                                 <div class="col-md-6">
                                     @Html.DropDownList("Job_Id", (List<SelectListItem>)ViewData["JobList"], "Select Job", new { @class = "form-control editor-field", @placeholder = "Select" })
@@ -64,7 +64,6 @@
                                 <div class="col-md-3"></div>
                                 <div class="col-md-5">
                                     <input type="submit" value="Edit" class="btn btn-info" />
-                                    <input type="submit" value="Reset" id="reset" class="btn btn-info" />
                                 </div>
 
                             </div>
@@ -144,10 +143,14 @@
                        },
                         success: function (data) {
                             if (data == "true")
-                                swal("Success", "Successfully Updated", "success");
+                            {
+                                swal("Success", "Successfully Updated", "success").then(function () {
+                                    resetfunction();
+                                    document.location = '/User/List';
+                                })
+                            }
                             else
                                 swal("Failed", data, "error");
-                            resetfunction();
                         },
                         error: function (data) {
                             alert(data)
@@ -167,11 +170,6 @@
                $("#Job_Id").val("")
 
             }
-            $("#reset").click(function () {
-
-                resetFunction();
-
-            });
         });
     </script>
 }

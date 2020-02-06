@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -18,6 +18,13 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Color_Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CommissionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -33,7 +40,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Customer_Name" Type="varchar" MaxLength="50" />
           <Property Name="Mobile1" Type="varchar" MaxLength="20" />
-          <Property Name="Gender" Type="varchar" MaxLength="10" />
+          <Property Name="Gender_Id" Type="int" />
           <Property Name="Address" Type="varchar" MaxLength="50" />
           <Property Name="Mobile2" Type="varchar" MaxLength="20" />
           <Property Name="Guarantor_Name" Type="varchar" MaxLength="50" />
@@ -66,6 +73,41 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Material_Name" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Order_Date" Type="datetime" />
+          <Property Name="Order_Status_Id" Type="int" />
+          <Property Name="Customer_Id" Type="int" />
+          <Property Name="Packaging_Charge" Type="float" />
+          <Property Name="Discount" Type="float" />
+          <Property Name="Commission_Type_Id" Type="int" />
+          <Property Name="Commission" Type="float" />
+          <Property Name="Delivery_Date" Type="datetime" />
+          <Property Name="Created_By" Type="int" />
+          <Property Name="Updated_On" Type="datetime" />
+          <Property Name="Updated_By" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Order_Id" Type="int" />
+          <Property Name="Product_Quantity_Id" Type="int" />
+          <Property Name="Sold_Price" Type="float" />
+          <Property Name="Purchase_Price" Type="float" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
@@ -90,7 +132,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Color_Id" Type="int" />
-          <Property Name="Quantity" Type="float" />
+          <Property Name="Quantity" Type="int" />
           <Property Name="Material_Id" Type="int" />
           <Property Name="Category_Id" Type="int" />
           <Property Name="Size_Group_Id" Type="int" />
@@ -121,6 +163,66 @@
           <Property Name="Job_Id" Type="int" />
           <Property Name="Hired_Date" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Customer_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Gender_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_CommissionType">
+          <End Role="CommissionType" Type="Self.CommissionType" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommissionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Commission_Type_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_OrderStatus">
+          <End Role="OrderStatus" Type="Self.OrderStatus" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Order_Status_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_ProductQuantityMap">
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductQuantityMap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Product_Quantity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -220,15 +322,39 @@
         <EntityContainer Name="InventoryManagementModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommissionType" EntityType="Self.CommissionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductQuantityMap" EntityType="Self.ProductQuantityMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SizeGroup" EntityType="Self.SizeGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customer_Gender" Association="Self.FK_Customer_Gender">
+            <End Role="Gender" EntitySet="Gender" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_CommissionType" Association="Self.FK_Order_CommissionType">
+            <End Role="CommissionType" EntitySet="CommissionType" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Customer" Association="Self.FK_Order_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_OrderStatus" Association="Self.FK_Order_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_ProductQuantityMap" Association="Self.FK_OrderDetails_ProductQuantityMap">
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="Product" EntitySet="Product" />
@@ -262,7 +388,8 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InventoryManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -282,13 +409,21 @@
           <Property Name="Color_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Color" FromRole="Color" ToRole="ProductQuantityMap" />
         </EntityType>
+        <EntityType Name="CommissionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_CommissionType" FromRole="CommissionType" ToRole="Order" />
+        </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Products" Relationship="InventoryManagementModel.FK_Product_Country" FromRole="Country" ToRole="Product" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Country" FromRole="Country" ToRole="Product" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -297,7 +432,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Customer_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Mobile1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Gender_Id" Type="Int32" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Mobile2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Guarantor_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -307,6 +442,8 @@
           <Property Name="Created_On" Type="DateTime" Precision="3" />
           <Property Name="Updated_By" Type="Int32" />
           <Property Name="Updated_On" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Gender" Relationship="Self.FK_Customer_Gender" FromRole="Customer" ToRole="Gender" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Customer" FromRole="Customer" ToRole="Order" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -314,6 +451,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_Gender" FromRole="Gender" ToRole="Customer" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Product_Gender" FromRole="Gender" ToRole="Product" />
         </EntityType>
         <EntityType Name="Job">
@@ -333,6 +471,46 @@
           <Property Name="Material_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="Material" ToRole="ProductQuantityMap" />
         </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order_Date" Type="DateTime" Precision="3" />
+          <Property Name="Order_Status_Id" Type="Int32" />
+          <Property Name="Customer_Id" Type="Int32" />
+          <Property Name="Packaging_Charge" Type="Double" />
+          <Property Name="Discount" Type="Double" />
+          <Property Name="Commission_Type_Id" Type="Int32" />
+          <Property Name="Commission" Type="Double" />
+          <Property Name="Delivery_Date" Type="DateTime" Precision="3" />
+          <Property Name="Created_By" Type="Int32" />
+          <Property Name="Updated_On" Type="DateTime" Precision="3" />
+          <Property Name="Updated_By" Type="Int32" />
+          <NavigationProperty Name="CommissionType" Relationship="Self.FK_Order_CommissionType" FromRole="Order" ToRole="CommissionType" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Order_Customer" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="OrderStatu" Relationship="Self.FK_Order_OrderStatus" FromRole="Order" ToRole="OrderStatus" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Order_Id" Type="Int32" />
+          <Property Name="Product_Quantity_Id" Type="Int32" />
+          <Property Name="Sold_Price" Type="Double" />
+          <Property Name="Purchase_Price" Type="Double" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="ProductQuantityMap" Relationship="Self.FK_OrderDetails_ProductQuantityMap" FromRole="OrderDetails" ToRole="ProductQuantityMap" />
+        </EntityType>
+        <EntityType Name="OrderStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Order_OrderStatus" FromRole="OrderStatus" ToRole="Order" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
@@ -343,16 +521,16 @@
           <Property Name="Product_Details" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Gender_Id" Type="Int32" />
           <Property Name="Country_Id" Type="Int32" />
+          <Property Name="Image_Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Is_Active" Type="Boolean" />
           <Property Name="Is_Delete" Type="Boolean" />
           <Property Name="Created_By" Type="Int32" />
           <Property Name="Created_On" Type="DateTime" Precision="3" />
           <Property Name="Updated_By" Type="Int32" />
           <Property Name="Updated_On" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Country" Relationship="Self.FK_Product_Country" FromRole="Product" ToRole="Country" />
           <NavigationProperty Name="Gender" Relationship="Self.FK_Product_Gender" FromRole="Product" ToRole="Gender" />
           <NavigationProperty Name="ProductQuantityMaps" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="Product" ToRole="ProductQuantityMap" />
-          <NavigationProperty Name="Country" Relationship="InventoryManagementModel.FK_Product_Country" FromRole="Product" ToRole="Country" />
-          <Property Name="Image_Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductQuantityMap">
           <Key>
@@ -360,7 +538,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Color_Id" Type="Int32" />
-          <Property Name="Quantity" Type="Double" />
+          <Property Name="Quantity" Type="Int32" />
           <Property Name="Material_Id" Type="Int32" />
           <Property Name="Category_Id" Type="Int32" />
           <Property Name="Size_Group_Id" Type="Int32" />
@@ -373,6 +551,7 @@
           <NavigationProperty Name="Category" Relationship="Self.FK_ProductQuantityMap_Category" FromRole="ProductQuantityMap" ToRole="Category" />
           <NavigationProperty Name="Color" Relationship="Self.FK_ProductQuantityMap_Color" FromRole="ProductQuantityMap" ToRole="Color" />
           <NavigationProperty Name="Material" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="ProductQuantityMap" ToRole="Material" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_ProductQuantityMap" FromRole="ProductQuantityMap" ToRole="OrderDetails" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
           <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
         </EntityType>
@@ -422,6 +601,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Order_CommissionType">
+          <End Role="CommissionType" Type="Self.CommissionType" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommissionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Commission_Type_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Country">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Country_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Gender">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Gender_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Customer_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_Gender">
           <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -458,6 +685,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Order_OrderStatus">
+          <End Role="OrderStatus" Type="Self.OrderStatu" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="Order_Status_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_ProductQuantityMap">
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductQuantityMap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Product_Quantity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProductQuantityMap_Product">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="*" />
@@ -485,11 +736,15 @@
         <EntityContainer Name="DBContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Colors" EntityType="Self.Color" />
+          <EntitySet Name="CommissionTypes" EntityType="Self.CommissionType" />
           <EntitySet Name="Countries" EntityType="Self.Country" />
           <EntitySet Name="Customers" EntityType="Self.Customer" />
           <EntitySet Name="Genders" EntityType="Self.Gender" />
           <EntitySet Name="Jobs" EntityType="Self.Job" />
           <EntitySet Name="Materials" EntityType="Self.Material" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+          <EntitySet Name="OrderStatus" EntityType="Self.OrderStatu" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ProductQuantityMaps" EntityType="Self.ProductQuantityMap" />
           <EntitySet Name="SizeGroups" EntityType="Self.SizeGroup" />
@@ -501,6 +756,22 @@
           <AssociationSet Name="FK_ProductQuantityMap_Color" Association="Self.FK_ProductQuantityMap_Color">
             <End Role="Color" EntitySet="Colors" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_CommissionType" Association="Self.FK_Order_CommissionType">
+            <End Role="CommissionType" EntitySet="CommissionTypes" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Gender" Association="Self.FK_Customer_Gender">
+            <End Role="Gender" EntitySet="Genders" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Customer" Association="Self.FK_Order_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Gender" Association="Self.FK_Product_Gender">
             <End Role="Gender" EntitySet="Genders" />
@@ -514,6 +785,14 @@
             <End Role="Material" EntitySet="Materials" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
           </AssociationSet>
+          <AssociationSet Name="FK_Order_OrderStatus" Association="Self.FK_Order_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_ProductQuantityMap" Association="Self.FK_OrderDetails_ProductQuantityMap">
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProductQuantityMap_Product" Association="Self.FK_ProductQuantityMap_Product">
             <End Role="Product" EntitySet="Products" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
@@ -522,23 +801,7 @@
             <End Role="SizeGroup" EntitySet="SizeGroups" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_Country" Association="InventoryManagementModel.FK_Product_Country">
-            <End Role="Country" EntitySet="Countries" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Product_Country">
-          <End Type="InventoryManagementModel.Country" Role="Country" Multiplicity="0..1" />
-          <End Type="InventoryManagementModel.Product" Role="Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Country">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="Country_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -561,6 +824,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CommissionTypes">
+            <EntityTypeMapping TypeName="InventoryManagementModel.CommissionType">
+              <MappingFragment StoreEntitySet="CommissionType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Countries">
             <EntityTypeMapping TypeName="InventoryManagementModel.Country">
               <MappingFragment StoreEntitySet="Country">
@@ -575,7 +846,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Customer_Name" ColumnName="Customer_Name" />
                 <ScalarProperty Name="Mobile1" ColumnName="Mobile1" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Gender_Id" ColumnName="Gender_Id" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Mobile2" ColumnName="Mobile2" />
                 <ScalarProperty Name="Guarantor_Name" ColumnName="Guarantor_Name" />
@@ -613,16 +884,54 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="InventoryManagementModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Order_Date" ColumnName="Order_Date" />
+                <ScalarProperty Name="Order_Status_Id" ColumnName="Order_Status_Id" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="Packaging_Charge" ColumnName="Packaging_Charge" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Commission_Type_Id" ColumnName="Commission_Type_Id" />
+                <ScalarProperty Name="Commission" ColumnName="Commission" />
+                <ScalarProperty Name="Delivery_Date" ColumnName="Delivery_Date" />
+                <ScalarProperty Name="Created_By" ColumnName="Created_By" />
+                <ScalarProperty Name="Updated_On" ColumnName="Updated_On" />
+                <ScalarProperty Name="Updated_By" ColumnName="Updated_By" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="InventoryManagementModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="Product_Quantity_Id" ColumnName="Product_Quantity_Id" />
+                <ScalarProperty Name="Sold_Price" ColumnName="Sold_Price" />
+                <ScalarProperty Name="Purchase_Price" ColumnName="Purchase_Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatus">
+            <EntityTypeMapping TypeName="InventoryManagementModel.OrderStatu">
+              <MappingFragment StoreEntitySet="OrderStatus">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="InventoryManagementModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Image_Path" ColumnName="Image_Path" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Product_No" ColumnName="Product_No" />
                 <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
                 <ScalarProperty Name="Product_Details" ColumnName="Product_Details" />
                 <ScalarProperty Name="Gender_Id" ColumnName="Gender_Id" />
                 <ScalarProperty Name="Country_Id" ColumnName="Country_Id" />
+                <ScalarProperty Name="Image_Path" ColumnName="Image_Path" />
                 <ScalarProperty Name="Is_Active" ColumnName="Is_Active" />
                 <ScalarProperty Name="Is_Delete" ColumnName="Is_Delete" />
                 <ScalarProperty Name="Created_By" ColumnName="Created_By" />

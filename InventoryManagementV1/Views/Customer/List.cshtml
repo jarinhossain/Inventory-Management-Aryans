@@ -1,4 +1,4 @@
-﻿@model List<InventoryManagementV1.Models.SizeGroup>
+﻿@model List<InventoryManagementV1.Models.Customer>
 @{
     Layout = "~/Views/Shared/layout.cshtml";
 }
@@ -9,6 +9,7 @@
     <section class="content-header">
         <h1>
             Data Tables
+
         </h1>
 
     </section>
@@ -21,11 +22,11 @@
                 <div class="box">
                     <div class="box-header">
                         <div class="col-md-11 box-header">
-                            <h3 class="box-title">Size Group List</h3>
+                            <h3 class="box-title">Customer List</h3>
                         </div>
 
                         <div class="col-md-1">
-                            <a href="~/SizeGroup/Create" class="btn btn-primary btn-sm">Add</a>
+                            <a href="~/Customer/Create" class="btn btn-primary btn-sm">Add</a>
                         </div>
 
                     </div>
@@ -34,17 +35,36 @@
                         <table id="example1" class="table table-bordered table-hover table-striped">
                             <thead>
                                 <tr class="info">
-                                    <th>Size Group Range</th>
+                                    <th>Customer Name</th>
+                                    <th>Mobile1</th>
+                                    <th>Mobile2</th>
+                                    <th>Gender</th>
+                                    <th>Address</th>
+                                    <th>Guarantor_Name</th>
+                                    <th>Guarantor_Mobile</th>
+                                    <th>Guarantor_Address</th>
                                     <th>Option</th>
+
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (InventoryManagementV1.Models.SizeGroup size in (IEnumerable<InventoryManagementV1.Models.SizeGroup>)Model)
+                                @foreach (InventoryManagementV1.Models.Customer customer in (IEnumerable<InventoryManagementV1.Models.Customer>)Model)
                                 {
                                     <tr>
-                                        <td>@size.Size_Group_Range</td>
-                                        <td><a href="~/SizeGroup/Edit?id=@size.Id">Edit</a></td>
-
+                                        <td>@customer.Customer_Name</td>
+                                        <td>@customer.Mobile1</td>
+                                        <td>@customer.Mobile2</td>
+                                        <td>
+                                            @if (@customer.Gender_Id != null)
+                                            {
+                                                @customer.Gender.Name
+                                            }
+                                        </td>
+                                        <td>@customer.Address</td>
+                                        <td>@customer.Guarantor_Name</td>
+                                        <td>@customer.Guarantor_Mobile</td>
+                                        <td>@customer.Guarantor_Address</td>
+                                        <td><a href="~/Customer/Edit?id=@customer.Id">Edit</a></td>
                                     </tr>
                                 }
                             </tbody>

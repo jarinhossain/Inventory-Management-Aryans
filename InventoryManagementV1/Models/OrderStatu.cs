@@ -12,29 +12,17 @@ namespace InventoryManagementV1.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Customer
+    public partial class OrderStatu
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Customer()
+        public OrderStatu()
         {
             this.Orders = new HashSet<Order>();
         }
     
         public int Id { get; set; }
-        public string Customer_Name { get; set; }
-        public string Mobile1 { get; set; }
-        public Nullable<int> Gender_Id { get; set; }
-        public string Address { get; set; }
-        public string Mobile2 { get; set; }
-        public string Guarantor_Name { get; set; }
-        public string Guarantor_Mobile { get; set; }
-        public string Guarantor_Address { get; set; }
-        public Nullable<int> Created_By { get; set; }
-        public Nullable<System.DateTime> Created_On { get; set; }
-        public Nullable<int> Updated_By { get; set; }
-        public Nullable<System.DateTime> Updated_On { get; set; }
+        public string Status { get; set; }
     
-        public virtual Gender Gender { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
     }

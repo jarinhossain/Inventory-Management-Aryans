@@ -26,17 +26,17 @@ namespace InventoryManagementV1.Models
         public string Product_Details { get; set; }
         public Nullable<int> Gender_Id { get; set; }
         public Nullable<int> Country_Id { get; set; }
+        public string Image_Path { get; set; }
         public Nullable<bool> Is_Active { get; set; }
         public Nullable<bool> Is_Delete { get; set; }
         public Nullable<int> Created_By { get; set; }
         public Nullable<System.DateTime> Created_On { get; set; }
         public Nullable<int> Updated_By { get; set; }
         public Nullable<System.DateTime> Updated_On { get; set; }
-        public string Image_Path { get; set; }
     
+        public virtual Country Country { get; set; }
         public virtual Gender Gender { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductQuantityMap> ProductQuantityMaps { get; set; }
-        public virtual Country Country { get; set; }
     }
 }

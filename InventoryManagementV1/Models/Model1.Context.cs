@@ -27,11 +27,15 @@ namespace InventoryManagementV1.Models
     
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
+        public virtual DbSet<CommissionType> CommissionTypes { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<Material> Materials { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<OrderStatu> OrderStatus { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductQuantityMap> ProductQuantityMaps { get; set; }
         public virtual DbSet<SizeGroup> SizeGroups { get; set; }

@@ -21,7 +21,7 @@
                     <div class="box-body">
                         @Html.HiddenFor(m => m.Id)
                         <div class="form-group">
-                            <label class="control-label col-md-3">Color Name</label>
+                            <label class="control-label col-md-3">Color Name<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Color_Name, new { @Class = "form-control", @placeholder = "Color Name" })
                             </div>
@@ -33,9 +33,7 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
                                 <input type="submit" value="Edit" class="btn btn-info" />
-                                <input type="submit" value="Reset" id="reset" class="btn btn-info" />
                             </div>
-
                         </div>
                     </div>
                 }
@@ -54,6 +52,7 @@
 
     <script>
         $(document).ready(function () {
+
             $("form").submit(function (event) {
                 if ($("#Color_Name").val() == "") {
                     event.preventDefault();
@@ -74,10 +73,14 @@
                        },
                         success: function (data) {
                             if (data == "true")
-                                swal("Success", "Successfully Saved", "success");
+                            {
+                                swal("Success", "Successfully Updated", "success").then(function () {
+                                    resetfunction();
+                                    document.location = '/Color/List';
+                                })
+                            }
                             else
                                 swal("Failed", data, "error");
-                            resetfunction();
                         },
                         error: function (data) {
                             alert(data)
@@ -90,9 +93,6 @@
             function resetfunction() {
                 $("#Color_Name").val("")
             }
-            $("#reset").click(function () {
-                resetFunction();
-            });
         });
     </script>
 }

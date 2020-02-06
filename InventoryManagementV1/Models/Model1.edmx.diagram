@@ -4,26 +4,35 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4f47b91cab78446f9cdcf96e2dc3c72a" Name="Diagram1">
-        <EntityTypeShape EntityType="InventoryManagementModel.Category" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Color" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Country" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Customer" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Gender" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Job" Width="1.5" PointX="5.75" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Material" Width="1.5" PointX="3" PointY="11.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.Product" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.ProductQuantityMap" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.SizeGroup" Width="1.5" PointX="3" PointY="13.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="InventoryManagementModel.User" Width="1.5" PointX="8" PointY="7" IsExpanded="true" />
+      <Diagram DiagramId="5d9e169d94a74fe993f9ee5bdf9045aa" Name="Diagram1">
+        <EntityTypeShape EntityType="InventoryManagementModel.Category" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Color" Width="1.5" PointX="3" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.CommissionType" Width="1.5" PointX="3" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Country" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Customer" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Gender" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Job" Width="1.5" PointX="7.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Material" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Order" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.OrderDetail" Width="1.5" PointX="7.5" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.OrderStatu" Width="1.5" PointX="3" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.ProductQuantityMap" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.SizeGroup" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="InventoryManagementModel.User" Width="1.5" PointX="10" PointY="10.125" IsExpanded="true" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Category" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Color" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Order_CommissionType" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Product_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Customer_Gender" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Order_Customer" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_Product_Gender" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_User_Job" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Material" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Order_OrderStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="InventoryManagementModel.FK_OrderDetails_ProductQuantityMap" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Product" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_SizeGroup" ManuallyRouted="false" />
-        <AssociationConnector Association="InventoryManagementModel.FK_Product_Country" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,9 +14,15 @@ namespace InventoryManagementV1.Models
     
     public partial class ProductQuantityMap
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProductQuantityMap()
+        {
+            this.OrderDetails = new HashSet<OrderDetail>();
+        }
+    
         public int Id { get; set; }
         public Nullable<int> Color_Id { get; set; }
-        public Nullable<double> Quantity { get; set; }
+        public Nullable<int> Quantity { get; set; }
         public Nullable<int> Material_Id { get; set; }
         public Nullable<int> Category_Id { get; set; }
         public Nullable<int> Size_Group_Id { get; set; }
@@ -30,6 +36,8 @@ namespace InventoryManagementV1.Models
         public virtual Category Category { get; set; }
         public virtual Color Color { get; set; }
         public virtual Material Material { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual Product Product { get; set; }
         public virtual SizeGroup SizeGroup { get; set; }
     }
