@@ -26,31 +26,32 @@
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label class="control-label col-md-3">Product No</label>
+                            <label class="control-label col-md-3">Product No<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Product_No, new { @Class = "form-control", @placeholder = "Product No" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Product Name</label>
+                            <label class="control-label col-md-3">Product Name<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Product_Name, new { @Class = "form-control", @placeholder = "Product Name" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Product Details</label>
+                            <label class="control-label col-md-3">Product Details<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Product_Details, new { @Class = "form-control", @placeholder = "Product Details" })
                             </div>
                         </div>
                         <div class="form-group">
 
-                            <label class="control-label col-md-3">Gender</label>
+                            <label class="control-label col-md-3">Gender<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Gender_Id", (List<SelectListItem>)ViewData["GenderList"], "Select Gender", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
-                        </div>                        <div class="form-group">
-                            <label class="control-label col-md-3">Country</label>
+                        </div>                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Country<span style="color:red;">*</span></label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Country_Id", (List<SelectListItem>)ViewData["CountryList"], "Select Country", new { @class = "form-control editor-field", @placeholder = "Select" })
@@ -67,41 +68,42 @@
                         <div class="box-header">
                             <h3 class="box-title"><b>Product Quantity Map Edit</b></h3>
                             <hr />
-                        </div>                        <div class="form-group">
-                            <label class="control-label col-md-3">Material</label>
+                        </div>                       
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Material<span style="color:red;">*</span></label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Material_Id", (List<SelectListItem>)ViewData["MaterialList"], "Select Material", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Category</label>
+                            <label class="control-label col-md-3">Category<span style="color:red;">*</span></label>
 
                             <div class="col-md-6">
                                 @Html.DropDownList("Category_Id", (List<SelectListItem>)ViewData["CategoryList"], "Select Category", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Size Group</label>
+                            <label class="control-label col-md-3">Size Group<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Size_Group_Id", (List<SelectListItem>)ViewData["SizeList"], "Select Size Group", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Color</label>
+                            <label class="control-label col-md-3">Color<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Color_Id", (List<SelectListItem>)ViewData["ColorList"], "Select Color", new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
 
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Quantity</label>
+                            <label class="control-label col-md-3">Quantity<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBox("Quantity", null, new { @Class = "form-control", @placeholder = "Quantity" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Price</label>
+                            <label class="control-label col-md-3">Price<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBox("Price", null, new { @Class = "form-control", @placeholder = "price" })
                             </div>
@@ -114,7 +116,9 @@
                             <div class="col-md-5">
                                 <input type="hidden" id="productQuantityHidden" />
                                 <input type="button" id="addBtn" value="Add" class="btn btn-info" />
-                                <input type="button" id="updateBtn" value="Update" class="btn btn-info update" />
+                                <input type="button"  id="updateBtn" value="Update" class="btn btn-info update" />
+                                <input type="button" id="ProductQuantityCancelBtn" value="Cancel" class="btn btn-info" />
+
 
                             </div>
 
@@ -188,6 +192,7 @@
 @section scripts{
     <script>
         $(document).ready(function () {
+            $("#updateBtn").hide();
             $("#addBtn").click(function () {
                
                 if ($("#Material_Id").val() == "") {
@@ -234,7 +239,6 @@
                         type: "POST",
                         data:
                        {
-
                            Material_Id: $("#Material_Id").val(),
                            Category_Id: $("#Category_Id").val(),
                            Size_Group_Id: $("#Size_Group_Id").val(),
@@ -272,70 +276,117 @@
                     }
                    
                 }
-
+             
             });
-
+            $("#ProductQuantityCancelBtn").click(function () {
+                ProductQuantityreset();
+            });
             //update e click krle nicer table row te id onushare update hbe + db eo update hbe.
             $("#updateBtn").click(function () {
-                var trList = $('#productQuantityTable > tbody').find('tr');
-                var hiddenFieldValue = $('#productQuantityHidden').val(); // hidden id of product quantity map
 
-                $(trList).each(function (i, el) {
-                    var tds = $(this).find('td');
+                if ($("#Material_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Material is required", "error").then(function () {
+                        $("#Material_Id").focus();
+                    });
+                }
 
-                    var editButton = $(tds).eq(6).find("button")[0]; // get first input field in td
-                    var editButtonId = $(editButton).attr('id'); // get edit button id
+                else if ($("#Category_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Category is required", "error").then(function () {
+                        $("#Category_Id").focus();
+                    });
+                }
+                else if ($("#Size_Group_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Size Group is required", "error").then(function () {
+                        $("#Size_Group_Id").focus();
+                    });
+                }
+                else if ($("#Color_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Color is required", "error").then(function () {
+                        $("#Color_Id").focus();
+                    });
+                }
+                else if ($("#Quantity").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Quantity is required", "error").then(function () {
+                        $("#Quantity").focus();
+                    });
+                }
+                else if ($("#Price").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Price is required", "error").then(function () {
+                        $("#Price").focus();
+                    });
+                }
+                else {
+                    var trList = $('#productQuantityTable > tbody').find('tr');
+                    var hiddenFieldValue = $('#productQuantityHidden').val(); // hidden id of product quantity map
 
-                    if(editButtonId == hiddenFieldValue){
-                        var material = $('#Material_Id option:selected').text();
-                        var category = $('#Category_Id option:selected').text();
-                        var sizegroup = $('#Size_Group_Id option:selected').text();
-                        var color = $('#Color_Id option:selected').text();
-                        var quantity = $("#Quantity").val();
-                        var price = $("#Price").val();
-                        
-                        $(tds).eq(0).text(material);
-                        $(tds).eq(1).text(category);
-                        $(tds).eq(2).text(sizegroup);
-                        $(tds).eq(3).text(color);
-                        $(tds).eq(4).text(quantity);
-                        $(tds).eq(5).text(price);
-                    }
-                });
+                    $(trList).each(function (i, el) {
+                        var tds = $(this).find('td');
 
-                event.preventDefault();
-                $.ajax({
-                    url: "/Product/ProductQuantityEdit",
-                    type: "POST",
-                    data:
-                   {
-                       Id: hiddenFieldValue,
-                       Material_Id: $("#Material_Id").val(),
-                       Category_Id: $("#Category_Id").val(),
-                       Size_Group_Id: $("#Size_Group_Id").val(),
-                       Color_Id: $("#Color_Id").val(),
-                       Quantity: $("#Quantity").val(),
-                       Price: $("#Price").val(),
-                       //  productQuantityList: productQuantityArray
-                   },
-                    success: function (data) {
-                        if (data == "true") {
-                            swal("Success", "Successfully Updated", "success").then(function () {
-                                ProductQuantityreset();
-                            })
+                        var editButton = $(tds).eq(6).find("button")[0]; // get first input field in td
+                        var editButtonId = $(editButton).attr('id'); // get edit button id
+
+                        if (editButtonId == hiddenFieldValue) {
+                            var material = $('#Material_Id option:selected').text();
+                            var category = $('#Category_Id option:selected').text();
+                            var sizegroup = $('#Size_Group_Id option:selected').text();
+                            var color = $('#Color_Id option:selected').text();
+                            var quantity = $("#Quantity").val();
+                            var price = $("#Price").val();
+
+                            $(tds).eq(0).text(material);
+                            $(tds).eq(1).text(category);
+                            $(tds).eq(2).text(sizegroup);
+                            $(tds).eq(3).text(color);
+                            $(tds).eq(4).text(quantity);
+                            $(tds).eq(5).text(price);
                         }
-                        else
-                            swal("Failed", data, "error");
-                    },
-                    error: function (data) {
-                        alert(data)
-                    },
+                    });
 
-                })
+                    event.preventDefault();
+                    $.ajax({
+                        url: "/Product/ProductQuantityEdit",
+                        type: "POST",
+                        data:
+                       {
+                           Id: hiddenFieldValue,
+                           Material_Id: $("#Material_Id").val(),
+                           Category_Id: $("#Category_Id").val(),
+                           Size_Group_Id: $("#Size_Group_Id").val(),
+                           Color_Id: $("#Color_Id").val(),
+                           Quantity: $("#Quantity").val(),
+                           Price: $("#Price").val(),
+                           //  productQuantityList: productQuantityArray
+                       },
+                        success: function (data) {
+                            if (data == "true") {
+                                swal("Success", "Successfully Updated", "success").then(function () {
+                                    ProductQuantityreset();
+                                    $("#addBtn").show();
+                                    $("#updateBtn").hide();
+                                })
+                            }
+                            else
+                                swal("Failed", data, "error");
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                }
+               
              
             });
         //table row er Edit e click krle row er data gulu id dhore form er text box show krbe.
             $("table").on('click', '.productQuantityEdit', function () {
+                $("#addBtn").hide();
+                $("#updateBtn").show();
                 var selectedTr = $(this).closest('tr');
                 var tds = $(selectedTr).find('td');
 

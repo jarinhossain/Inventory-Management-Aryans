@@ -21,13 +21,13 @@
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label class="control-label col-md-3">Customer Name</label>
+                            <label class="control-label col-md-3">Customer Name<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Customer_Name, new { @Class = "form-control", @placeholder = "Customer Name" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Mobile1</label>
+                            <label class="control-label col-md-3">Mobile1<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Mobile1, new { @Class = "form-control", @placeholder = "Mobile1" })
                             </div>
@@ -39,32 +39,32 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Gender</label>
+                            <label class="control-label col-md-3">Gender<span style="color:red;">*</span></label>
                             <div class="col-md-6">
-                                @Html.DropDownList("Gender_Id", (List<SelectListItem>)ViewData["GenderList"], "Select Gender", new { @class = "form-control editor-field", @placeholder = "Select" })
+                                @Html.DropDownList("Gender_Id", (List<SelectListItem>)ViewData["GenderList"], new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
 
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Address</label>
+                            <label class="control-label col-md-3">Address<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextAreaFor(m => m.Address, new { @Class = "form-control", @placeholder = "Address" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Guarantor Name</label>
+                            <label class="control-label col-md-3">Guarantor Name<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Guarantor_Name, new { @Class = "form-control", @placeholder = "Guarantor Name" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Guarantor Mobile</label>
+                            <label class="control-label col-md-3">Guarantor Mobile<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Guarantor_Mobile, new { @Class = "form-control", @placeholder = "Guarantor Mobile" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Guarantor Address</label>
+                            <label class="control-label col-md-3">Guarantor Address<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextAreaFor(m => m.Guarantor_Address, new { @Class = "form-control", @placeholder = "Guarantor" })
                             </div>
