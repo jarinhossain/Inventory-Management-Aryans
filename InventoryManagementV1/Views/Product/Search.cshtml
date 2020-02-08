@@ -63,7 +63,12 @@
 
                                             }
                                         </td>
-                                        <td><a href="~/Product/Edit?id=@product.Id">Edit</a></td>
+                                        <td>
+                                        <a href="~/Product/Edit?id=@product.Id" class="btn btn-primary btn-sm">Edit</a>
+                                      <a href="~/Product/Details?id=@product.Id" class="btn btn-primary btn-sm">Details</a>
+                                        <a href="~/Product/AddQuantity?id=@product.Id" class="btn btn-primary btn-sm">Add Quantity</a>
+
+                                        </td>
                                     </tr>
                                 }
                             </tbody>

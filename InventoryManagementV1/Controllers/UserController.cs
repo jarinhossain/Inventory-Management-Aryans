@@ -77,5 +77,17 @@ namespace InventoryManagementV1.Controllers
 
             return View(user);
         }
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+
+
+            DBContext DB = new DBContext();
+            User user = (from u in DB.Users
+                                 where u.Id == id
+                                 select u).FirstOrDefault();
+
+            return View(user);
+        }
     }
 }

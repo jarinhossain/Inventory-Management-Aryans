@@ -193,6 +193,7 @@
     <script>
         $(document).ready(function () {
             $("#updateBtn").hide();
+            ProductQuantityreset();
             $("#addBtn").click(function () {
                
                 if ($("#Material_Id").val() == "") {
@@ -280,6 +281,8 @@
             });
             $("#ProductQuantityCancelBtn").click(function () {
                 ProductQuantityreset();
+                $("#addBtn").show();
+                $("#updateBtn").hide();
             });
             //update e click krle nicer table row te id onushare update hbe + db eo update hbe.
             $("#updateBtn").click(function () {
@@ -387,6 +390,7 @@
             $("table").on('click', '.productQuantityEdit', function () {
                 $("#addBtn").hide();
                 $("#updateBtn").show();
+                $("#ProductQuantityCancelBtn").show();
                 var selectedTr = $(this).closest('tr');
                 var tds = $(selectedTr).find('td');
 

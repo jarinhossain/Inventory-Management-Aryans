@@ -56,7 +56,12 @@
                                                 @user.Job.Job_Title
                                             }
                                         </td>
-                                        <td><a href="~/User/Edit?id=@user.Id">Edit</a></td>
+                                        <td>
+                                            <a href="~/User/Edit?id=@user.Id" class="btn btn-primary">Edit</a>
+                                            <a href="~/User/Details?id=@user.Id" class="btn btn-primary">Details</a>
+                                        </td>
+                                      
+
 
                                     </tr>
                                 }

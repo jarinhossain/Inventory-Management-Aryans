@@ -64,7 +64,12 @@
                                         <td>@customer.Guarantor_Name</td>
                                         <td>@customer.Guarantor_Mobile</td>
                                         <td>@customer.Guarantor_Address</td>
-                                        <td><a href="~/Customer/Edit?id=@customer.Id">Edit</a></td>
+                                        <td>
+                                            <a href="~/Customer/Edit?id=@customer.Id" class="btn btn-primary">Edit</a>
+                                            <a href="~/Customer/Details?id=@customer.Id" class="btn btn-primary">Details</a>
+
+                                        </td>
+
                                     </tr>
                                 }
                             </tbody>

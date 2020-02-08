@@ -74,5 +74,17 @@ namespace InventoryManagementV1.Controllers
                                    select pro).ToList();
             return View(customerdb);
         }
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+
+
+            DBContext DB = new DBContext();
+            Customer customer = (from u in DB.Customers
+                               where u.Id == id
+                               select u).FirstOrDefault();
+
+            return View(customer);
+        }
     }
 }
