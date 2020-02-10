@@ -211,15 +211,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderDetails_ProductQuantityMap">
-          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="0..1" />
+        <Association Name="FK_OrderDetails_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
           <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductQuantityMap">
+            <Principal Role="Order">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="OrderDetails">
-              <PropertyRef Name="Product_Quantity_Id" />
+              <PropertyRef Name="Order_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -351,8 +351,8 @@
             <End Role="OrderStatus" EntitySet="OrderStatus" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_OrderDetails_ProductQuantityMap" Association="Self.FK_OrderDetails_ProductQuantityMap">
-            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+          <AssociationSet Name="FK_OrderDetails_Order" Association="Self.FK_OrderDetails_Order">
+            <End Role="Order" EntitySet="Order" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
@@ -490,6 +490,7 @@
           <NavigationProperty Name="CommissionType" Relationship="Self.FK_Order_CommissionType" FromRole="Order" ToRole="CommissionType" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Order_Customer" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="OrderStatu" Relationship="Self.FK_Order_OrderStatus" FromRole="Order" ToRole="OrderStatus" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_Order" FromRole="Order" ToRole="OrderDetails" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -501,7 +502,7 @@
           <Property Name="Sold_Price" Type="Double" />
           <Property Name="Purchase_Price" Type="Double" />
           <Property Name="Quantity" Type="Int32" />
-          <NavigationProperty Name="ProductQuantityMap" Relationship="Self.FK_OrderDetails_ProductQuantityMap" FromRole="OrderDetails" ToRole="ProductQuantityMap" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetails_Order" FromRole="OrderDetails" ToRole="Order" />
         </EntityType>
         <EntityType Name="OrderStatu">
           <Key>
@@ -551,7 +552,6 @@
           <NavigationProperty Name="Category" Relationship="Self.FK_ProductQuantityMap_Category" FromRole="ProductQuantityMap" ToRole="Category" />
           <NavigationProperty Name="Color" Relationship="Self.FK_ProductQuantityMap_Color" FromRole="ProductQuantityMap" ToRole="Color" />
           <NavigationProperty Name="Material" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="ProductQuantityMap" ToRole="Material" />
-          <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_ProductQuantityMap" FromRole="ProductQuantityMap" ToRole="OrderDetails" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
           <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
         </EntityType>
@@ -697,15 +697,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderDetails_ProductQuantityMap">
-          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="0..1" />
+        <Association Name="FK_OrderDetails_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
           <End Role="OrderDetails" Type="Self.OrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductQuantityMap">
+            <Principal Role="Order">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="OrderDetails">
-              <PropertyRef Name="Product_Quantity_Id" />
+              <PropertyRef Name="Order_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -789,8 +789,8 @@
             <End Role="OrderStatus" EntitySet="OrderStatus" />
             <End Role="Order" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK_OrderDetails_ProductQuantityMap" Association="Self.FK_OrderDetails_ProductQuantityMap">
-            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+          <AssociationSet Name="FK_OrderDetails_Order" Association="Self.FK_OrderDetails_Order">
+            <End Role="Order" EntitySet="Orders" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductQuantityMap_Product" Association="Self.FK_ProductQuantityMap_Product">

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using InventoryManagementV1.Models;
+using System.Data.Entity;
+using Newtonsoft.Json;
 
 namespace InventoryManagementV1.Controllers
 {
@@ -41,16 +43,42 @@ namespace InventoryManagementV1.Controllers
             Product productDB = (from pro in db.Products
                                  where pro.Product_No == Product_No
                                  select pro).FirstOrDefault();
+
             List<ProductQuantityMap> quantity = (from pro in db.ProductQuantityMaps
                                                  where pro.Product_Id == productDB.Id
-                                                 select pro).ToList();
+                                                 select pro)
+                                                  .Include("Material")
+                                                   .Include("Category")
+                                                    .Include("SizeGroup")
+                                                 .Include("Color")
 
-            /// method 2
-            //List<ProductQuantityMap> map = (from quantityMap in db.ProductQuantityMaps
-            //                                where quantityMap.Product.Product_No == Product_No
-            //                                select quantityMap).ToList();
-            return Json(quantity, JsonRequestBehavior.AllowGet);
+                                                 .ToList();
+
+            string json = JsonConvert.SerializeObject(quantity, Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
-        
+
+        [HttpPost]
+        public JsonResult OrderCreate(Order order)
+        {
+           foreach(var item in order.OrderDetails)
+            {
+                ProductQuantityMap pro = (from p in db.ProductQuantityMaps
+                                          where p.Id == item.Product_Quantity_Id
+                                          select p).FirstOrDefault();
+                pro.Quantity = pro.Quantity - item.Quantity;
+              
+            }
+
+            db.Orders.Add(order);
+
+            db.SaveChanges();
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

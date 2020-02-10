@@ -43,13 +43,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Email<span style="color:red;">*</span>label>
+                                <label class="control-label col-md-3">Email</label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.Email, new { @Class = "form-control", @placeholder = "Email" })
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3">Address<span style="color:red;">*</span></label>
+                                <label class="control-label col-md-3">Address</label>
                                 <div class="col-md-6">
                                     @Html.TextBoxFor(m => m.Address, new { @Class = "form-control", @placeholder = "Address" })
                                 </div>
@@ -112,20 +112,7 @@
                     });
                 }
 
-                else if ($("#Email").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Email is required", "error").then(function () {
-                        $("#Email").focus();
-                    });
-                }
-
-                else if ($("#Address").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Address is required", "error").then(function () {
-                        $("#Address").focus();
-                    });
-                }
-
+               
                 else if ($("#Job_Id").val() == "") {
                     event.preventDefault();
                     swal("Failed", "Job Id is required", "error").then(function () {

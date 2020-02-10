@@ -14,6 +14,12 @@ namespace InventoryManagementV1.Models
     
     public partial class Order
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Order()
+        {
+            this.OrderDetails = new HashSet<OrderDetail>();
+        }
+    
         public int Id { get; set; }
         public Nullable<System.DateTime> Order_Date { get; set; }
         public Nullable<int> Order_Status_Id { get; set; }
@@ -30,5 +36,7 @@ namespace InventoryManagementV1.Models
         public virtual CommissionType CommissionType { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual OrderStatu OrderStatu { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
