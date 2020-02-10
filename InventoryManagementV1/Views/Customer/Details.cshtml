@@ -1,0 +1,80 @@
+﻿
+@model InventoryManagementV1.Models.Customer
+@{
+    Layout = "~/Views/Shared/layout.cshtml";
+
+}
+
+<!DOCTYPE html>
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border text-center">
+                    <h3 class="box-title">Customer Details</h3>
+                </div>
+                <!-- /.box-header -->
+
+
+                <div class="box-body">
+                    <table class="table table-hover table-fixed">
+                        <tbody>
+
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Customer Name: </td>
+                                <td style="font-weight:bold">@Model.Customer_Name</td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Mobile1: </td>
+                                <td style="font-weight:bold">@Model.Mobile1</td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Mobile2: </td>
+                                <td style="font-weight:bold">@Model.Mobile2</td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Gender: </td>
+                                <td style="font-weight:bold">
+                                    @if (@Model.Gender_Id != null)
+                                    {
+                                        @Model.Gender.Name
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Address: </td>
+                                <td style="font-weight:bold">@Model.Address</td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Guarantor Name: </td>
+                                <td style="font-weight:bold">@Model.Guarantor_Name</td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Guarantor Mobile: </td>
+                                <td style="font-weight:bold">@Model.Guarantor_Mobile</td>
+                            </tr>
+                            <tr class="active">
+                                <td class="text-primary text-right" width="30%">Guarantor Address: </td>
+                                <td style="font-weight:bold">@Model.Guarantor_Address</td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                   
+
+                </div>
+
+            </div>
+
+            <!-- /.box -->
+
+        </div>
+        <!--/.col (left) -->
+
+    </div>
+    <!-- /.row -->
+</section>
+
+

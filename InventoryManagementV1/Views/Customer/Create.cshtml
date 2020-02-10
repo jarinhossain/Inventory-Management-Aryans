@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Gender<span style="color:red;">*</span></label>
+                            <label class="control-label col-md-3">Gender</label>
                             <div class="col-md-6">
                                 @Html.DropDownList("Gender_Id", (List<SelectListItem>)ViewData["GenderList"], new { @class = "form-control editor-field", @placeholder = "Select" })
                             </div>
@@ -52,19 +52,19 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Guarantor Name<span style="color:red;">*</span></label>
+                            <label class="control-label col-md-3">Guarantor Name</label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Guarantor_Name, new { @Class = "form-control", @placeholder = "Guarantor Name" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Guarantor Mobile<span style="color:red;">*</span></label>
+                            <label class="control-label col-md-3">Guarantor Mobile</label>
                             <div class="col-md-6">
                                 @Html.TextBoxFor(m => m.Guarantor_Mobile, new { @Class = "form-control", @placeholder = "Guarantor Mobile" })
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Guarantor Address<span style="color:red;">*</span></label>
+                            <label class="control-label col-md-3">Guarantor Address</label>
                             <div class="col-md-6">
                                 @Html.TextAreaFor(m => m.Guarantor_Address, new { @Class = "form-control", @placeholder = "Guarantor" })
                             </div>
@@ -107,40 +107,11 @@
                         $("#Mobile1").focus();
                     });
                 }
-                else if ($("#Mobile2").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Mobile2 is required", "error").then(function () {
-                        $("#Mobile2").focus();
-                    });
-                }
-                else if ($("#Gender_Id").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Gender_Id is required", "error").then(function () {
-                        $("#Gender_Id").focus();
-                    });
-                }
+               
                 else if ($("#Address").val() == "") {
                     event.preventDefault();
                     swal("Failed", "Address is required", "error").then(function () {
                         $("#Address").focus();
-                    });
-                }
-                else if ($("#Guarantor_Name").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Guarantor Name is required", "error").then(function () {
-                        $("#Guarantor_Name").focus();
-                    });
-                }
-                else if ($("#Guarantor_Mobile").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Guarantor Mobile is required", "error").then(function () {
-                        $("#Guarantor_Mobile").focus();
-                    });
-                }
-                else if ($("#Guarantor_Address").val() == "") {
-                    event.preventDefault();
-                    swal("Failed", "Guarantor Address is required", "error").then(function () {
-                        $("#Guarantor_Address").focus();
                     });
                 }
                 else {
