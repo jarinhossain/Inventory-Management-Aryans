@@ -51,6 +51,7 @@ namespace InventoryManagementV1.Controllers
             user.Mobile_No = userobj.Mobile_No;
             user.Email = userobj.Email;
             user.Address = userobj.Address;
+            user.Voter_Id = userobj.Voter_Id;
             user.Job_Id = userobj.Job_Id;
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);

@@ -101,13 +101,13 @@
                         $("#Customer_Name").focus();
                     });
                 }
-                else if ($("#Mobile1").val() == "") {
+                else if ($("#Mobile1").val() == "" || $('#Mobile1').val().length != 11) {
                     event.preventDefault();
                     swal("Failed", "Mobile1 is required", "error").then(function () {
                         $("#Mobile1").focus();
                     });
                 }
-               
+            
                 else if ($("#Address").val() == "") {
                     event.preventDefault();
                     swal("Failed", "Address is required", "error").then(function () {

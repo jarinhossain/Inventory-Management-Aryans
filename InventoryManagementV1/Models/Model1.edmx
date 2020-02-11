@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InventoryManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -160,7 +160,9 @@
           <Property Name="Mobile_No" Type="varchar" MaxLength="50" />
           <Property Name="Email" Type="varchar" MaxLength="50" />
           <Property Name="Address" Type="varchar" MaxLength="50" />
+          <Property Name="Voter_Id" Type="varchar" MaxLength="50" />
           <Property Name="Job_Id" Type="int" />
+          <Property Name="Image_Path" Type="varchar" MaxLength="200" />
           <Property Name="Hired_Date" Type="datetime" />
         </EntityType>
         <Association Name="FK_Customer_Gender">
@@ -220,6 +222,18 @@
             </Principal>
             <Dependent Role="OrderDetails">
               <PropertyRef Name="Order_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetails_ProductQuantityMap">
+          <End Role="ProductQuantityMap" Type="Self.ProductQuantityMap" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductQuantityMap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Product_Quantity_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -355,6 +369,10 @@
             <End Role="Order" EntitySet="Order" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_ProductQuantityMap" Association="Self.FK_OrderDetails_ProductQuantityMap">
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMap" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Product_Country" Association="Self.FK_Product_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="Product" EntitySet="Product" />
@@ -388,8 +406,7 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InventoryManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -503,6 +520,7 @@
           <Property Name="Purchase_Price" Type="Double" />
           <Property Name="Quantity" Type="Int32" />
           <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetails_Order" FromRole="OrderDetails" ToRole="Order" />
+          <NavigationProperty Name="ProductQuantityMap" Relationship="InventoryManagementModel.FK_OrderDetails_ProductQuantityMap" FromRole="OrderDetail" ToRole="ProductQuantityMap" />
         </EntityType>
         <EntityType Name="OrderStatu">
           <Key>
@@ -554,6 +572,7 @@
           <NavigationProperty Name="Material" Relationship="Self.FK_ProductQuantityMap_Material" FromRole="ProductQuantityMap" ToRole="Material" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
           <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
+          <NavigationProperty Name="OrderDetails" Relationship="InventoryManagementModel.FK_OrderDetails_ProductQuantityMap" FromRole="ProductQuantityMap" ToRole="OrderDetail" />
         </EntityType>
         <EntityType Name="SizeGroup">
           <Key>
@@ -576,6 +595,8 @@
           <Property Name="Job_Id" Type="Int32" />
           <Property Name="Hired_Date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Job" Relationship="Self.FK_User_Job" FromRole="User" ToRole="Job" />
+          <Property Name="Voter_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Image_Path" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_ProductQuantityMap_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -801,7 +822,23 @@
             <End Role="SizeGroup" EntitySet="SizeGroups" />
             <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
           </AssociationSet>
+          <AssociationSet Name="FK_OrderDetails_ProductQuantityMap" Association="InventoryManagementModel.FK_OrderDetails_ProductQuantityMap">
+            <End Role="ProductQuantityMap" EntitySet="ProductQuantityMaps" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_OrderDetails_ProductQuantityMap">
+          <End Type="InventoryManagementModel.ProductQuantityMap" Role="ProductQuantityMap" Multiplicity="0..1" />
+          <End Type="InventoryManagementModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductQuantityMap">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="Product_Quantity_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -970,6 +1007,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="InventoryManagementModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Image_Path" ColumnName="Image_Path" />
+                <ScalarProperty Name="Voter_Id" ColumnName="Voter_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="User_Name" ColumnName="User_Name" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

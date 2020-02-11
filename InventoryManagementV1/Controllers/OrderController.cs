@@ -71,14 +71,31 @@ namespace InventoryManagementV1.Controllers
                                           where p.Id == item.Product_Quantity_Id
                                           select p).FirstOrDefault();
                 pro.Quantity = pro.Quantity - item.Quantity;
+                
               
             }
-
+            order.Order_Date = DateTime.Now;
             db.Orders.Add(order);
 
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public ActionResult List()
+        {
+            List<Order> orderlist = (from pro in db.Orders
+                                              select pro).Include("Customer").ToList();
+            return View(orderlist);
+        }
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            DBContext DB = new DBContext();
+            Order order = (from u in DB.Orders
+                               where u.Id == id
+                               select u).FirstOrDefault();
 
+            return View(order);
+        }
     }
 }

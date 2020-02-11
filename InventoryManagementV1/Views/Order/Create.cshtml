@@ -14,7 +14,7 @@
               
                 <!-- /.box-header -->
 
-                @using (Html.BeginForm("Create", "Order", FormMethod.Post, new { @class = "form-horizontal" }))
+                @using (Html.BeginForm("Create", "Order", FormMethod.Post, new { @class = "form-horizontal"}))
                 {
                     <div class="box-body">
                         @Html.HiddenFor(m => m.Id)
@@ -83,7 +83,7 @@
 
                 <!-- /.box-header -->
 
-                @using (Html.BeginForm("Create", "Order", FormMethod.Post, new { @class = "form-horizontal" }))
+                @using (Html.BeginForm("Create", "Order", FormMethod.Post, new { @class = "form-horizontal", @id="formid"}))
                 {
                     <div class="box-body">
                         <div class="box-header">
@@ -160,8 +160,8 @@
                      + '<td>' + color + '</td>'
                     + '<td>' + quantity + '</td>'
                      + '<td>' + price + '</td>'
-                     + '<td>' + '<input class="form-control" type="text"/>' + '</td>'
-                     + '<td>' + '<input class="form-control" type="text"/>' + '</td>'
+                     + '<td>' + '<input class="form-control" id="soldquantity" type="text"/>' + '</td>'
+                     + '<td>' + '<input class="form-control" id="soldprice" type="text"/>' + '</td>'
                         + '<td>' + '<button id="' + editButtonId + '" class="btn btn-primary btn-sm productQuantityDelete">Delete</button>' + '</td>'
                + '</tr>';
                     $("#ProductSaleTable> tbody:last-child").append(row);
@@ -221,7 +221,7 @@
                              + '<td>' + jsonObject[i].Color.Color_Name + '</td>'
                               + '<td>' + jsonObject[i].Quantity + '</td>'
                                + '<td>' + jsonObject[i].Price + '</td>'
-                             + '<td>' + '<button id="'+jsonObject[i].Id+'" class="btn btn-primary btn-sm chooseBtn">Choose Button</button>' + '</td>'
+                             + '<td>' + '<button id="'+jsonObject[i].Id+'" class="btn btn-primary btn-sm chooseBtn">Choose</button>' + '</td>'
                              + '</tr>';
                             rowList = rowList + singleRow;
                         }
@@ -237,61 +237,80 @@
                 })
             });
             $("#SaveBtn").click(function () {
-                event.preventDefault();
-                //parse table
-                var productQuantityArray = [];
-                var trList = $('#ProductSaleTable > tbody').find('tr');
+              
+                if ($("#soldquantity").val() == "" || $("#soldquantity").val() <= '0') {
+                    event.preventDefault();
+                    swal("Failed", "Invalid Sold Quantity", "error").then(function () {
+                        $("#soldquantity").focus();
+                    });
+                }
 
-                $(trList).each(function (i, el) {
-                    var tds = $(this).find('td');
+                else if ($("#soldprice").val() == "" || $("#soldprice").val() <= '0') {
+                    event.preventDefault();
+                    swal("Failed", "Invalid Sold Price", "error").then(function () {
+                        $("#soldprice").focus();
+                    });
+                }
+                else {
+                    event.preventDefault();
+                    //parse table
+                    var productQuantityArray = [];
+                    var trList = $('#ProductSaleTable > tbody').find('tr');
 
-                    //input field +id select.
-                  
-                    var quantityInputField = $(tds).eq(6).find("input")[0];
-                    var priceInputField = $(tds).eq(7).find("input")[0];// get first input field in td
-                    var PurchasePrice = $(tds).eq(5).text();
-                    var DeleteBtnId = $(tds).eq(8).find("button")[0];
-                   
+                    $(trList).each(function (i, el) {
+                        var tds = $(this).find('td');
 
-                    //input + id assign 
-                    var soldQuantity = $(quantityInputField).val();  // get input field value
-                    var soldprice = $(priceInputField).val();
-                    
-                    var ProductQuantityId = $(DeleteBtnId).attr('id');
+                        //input field +id select.
 
-                 
-                    var obj = {
-                        Quantity: soldQuantity,
-                        Sold_Price: soldprice,
-                        Purchase_Price:PurchasePrice,
-                        Product_Quantity_Id: ProductQuantityId,
-                    };
+                        var quantityInputField = $(tds).eq(6).find("input")[0];
+                        var priceInputField = $(tds).eq(7).find("input")[0];// get first input field in td
+                        var PurchasePrice = $(tds).eq(5).text();
+                        var DeleteBtnId = $(tds).eq(8).find("button")[0];
 
-                    productQuantityArray.push(obj);
-                })
-                console.log(productQuantityArray);
 
-                $.ajax({
-                    url: "/Order/OrderCreate",
-                    type: "post",
-                    data:
-                   {
-                       Customer_Id:  $('#customerId').val(),
-                       orderDetails: productQuantityArray,
-                   },
-                    success: function (data) {
-                        if (data == "true")
-                            swal("success", "successfully saved", "success");
+                        //input + id assign 
+                        var soldQuantity = $(quantityInputField).val();  // get input field value
+                        var soldprice = $(priceInputField).val();
 
-                        else
-                            swal("failed", data, "error");
-                        resetfunction();
-                    },
-                    error: function (data) {
-                        alert(data)
-                    },
+                        var ProductQuantityId = $(DeleteBtnId).attr('id');
 
-                })
+
+                        var obj = {
+                            Quantity: soldQuantity,
+                            Sold_Price: soldprice,
+                            Purchase_Price: PurchasePrice,
+                            Product_Quantity_Id: ProductQuantityId,
+                        };
+
+                        productQuantityArray.push(obj);
+                    })
+                    console.log(productQuantityArray);
+
+                    $.ajax({
+                        url: "/Order/OrderCreate",
+                        type: "post",
+                        data:
+                       {
+                           Customer_Id: $('#customerId').val(),
+                           orderDetails: productQuantityArray,
+                       },
+                        success: function (data) {
+                            if (data == "true") {
+                                swal("success", "successfully saved", "success").then(function () {
+                                    location.reload();//full page load using jquery then all data reset from page.
+                                })
+                            }
+                            else
+                                swal("failed", data, "error");
+                            resetfunction();
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                }
+              
 
             });
           
