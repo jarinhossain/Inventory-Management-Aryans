@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <div class="col-md-3"></div>
                             <div class="col-md-5">
-                                <input type="submit" value="Edit" class="btn btn-info" />
+                                <input type="submit" value="Update" class="btn btn-info" />
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         $("#Customer_Name").focus();
                     });
                 }
-                else if ($("#Mobile1").val() == "") {
+                else if ($("#Mobile1").val() == "" || $('#Mobile1').val().length != 11) {
                     event.preventDefault();
                     swal("Failed", "Mobile1 is required", "error").then(function () {
                         $("#Mobile1").focus();

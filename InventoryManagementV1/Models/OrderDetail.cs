@@ -22,5 +22,6 @@ namespace InventoryManagementV1.Models
         public Nullable<int> Quantity { get; set; }
     
         public virtual Order Order { get; set; }
+        public virtual ProductQuantityMap ProductQuantityMap { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-@model InventoryManagementV1.Models.Product
+@model InventoryManagementV1.Models.Order
 @{
     Layout = "~/Views/Shared/layout.cshtml";
 
@@ -13,7 +13,7 @@
             <!-- general form elements -->
             <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <h3 class="box-title">Product Details</h3>
+                    <h3 class="box-title">Order Details</h3>
                 </div>
                 <!-- /.box-header -->
 
@@ -27,35 +27,20 @@
                         <tbody>
 
                             <tr class="active">
-                                <td class="text-primary text-right" width="30%"> Product No: </td>
-                                <td style="font-weight:bold">@Model.Product_No</td>
+                                <td class="text-primary text-right" width="30%"> Order Date: </td>
+                                <td style="font-weight:bold">@Model.Order_Date</td>
                             </tr>
+                          
                             <tr class="active">
-                                <td class="text-primary text-right" width="30%"> Product Name: </td>
-                                <td style="font-weight:bold">@Model.Product_Name</td>
-                            </tr>
-                            <tr class="active">
-                                <td class="text-primary text-right" width="30%"> Product Details: </td>
-                                <td style="font-weight:bold">@Model.Product_Details</td>
-                            </tr>
-                            <tr class="active">
-                                <td class="text-primary text-right" width="30%">Gender: </td>
+                                <td class="text-primary text-right" width="30%">Customer Name: </td>
                                 <td style="font-weight:bold">
-                                    @if (@Model.Gender_Id != null)
+                                    @if (@Model.Customer_Id != null)
                                     {
-                                        @Model.Gender.Name
+                                        @Model.Customer.Customer_Name
                                     }
                                 </td>
                             </tr>
-                            <tr class="active">
-                                <td class="text-primary text-right" width="30%">Country: </td>
-                                <td style="font-weight:bold">
-                                    @if (@Model.Country_Id != null)
-                                    {
-                                        @Model.Country.Name
-                                    }
-                                </td>
-                            </tr>
+                         
                         </tbody>
                     </table>
                     <div class="form-group"> </div>
@@ -70,46 +55,55 @@
                                 <th>Category</th>
                                 <th>Size Group</th>
                                 <th>Color</th>
+                                <th>Purchase Price</th>
+                                <th>Purchase Price</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (InventoryManagementV1.Models.ProductQuantityMap quantitymap in (IEnumerable<InventoryManagementV1.Models.ProductQuantityMap>)Model.ProductQuantityMaps)
+                            @foreach (InventoryManagementV1.Models.OrderDetail orderdetails in (IEnumerable<InventoryManagementV1.Models.OrderDetail>)Model.OrderDetails)
                             {
                                 <tr>
                                     <td>
-                                        @if (@quantitymap.Material_Id != null)
+                                        @if (@orderdetails.Product_Quantity_Id != null &&                       @orderdetails.ProductQuantityMap.Material_Id != null)
                                         {
-                                            @quantitymap.Material.Material_Name
+                                           
+                                            @orderdetails.ProductQuantityMap.Material.Material_Name
                                         }
                                     </td>
                                     <td>
-                                        @if (@quantitymap.Category_Id != null)
+                                        @if (@orderdetails.Product_Quantity_Id != null && @orderdetails.ProductQuantityMap.Category_Id != null)
                                         {
-                                            @quantitymap.Category.Category_Name
+
+                                            @orderdetails.ProductQuantityMap.Category.Category_Name
+
                                         }
                                     </td>
                                     <td>
-                                        @if (@quantitymap.Size_Group_Id != null)
+                                        @if (@orderdetails.Product_Quantity_Id != null && @orderdetails.ProductQuantityMap.Size_Group_Id != null)
                                         {
-                                            @quantitymap.SizeGroup.Size_Group_Range
+
+                                            @orderdetails.ProductQuantityMap.SizeGroup.Size_Group_Range
+
                                         }
                                     </td>
                                     <td>
-                                        @if (@quantitymap.Color_Id != null)
+                                        @if (@orderdetails.Product_Quantity_Id != null && @orderdetails.ProductQuantityMap.Color_Id != null)
                                         {
-                                            @quantitymap.Color.Color_Name
+
+                                            @orderdetails.ProductQuantityMap.Color.Color_Name
+
                                         }
                                     </td>
-                                    <td>@quantitymap.Quantity</td>
-                                    <td>@quantitymap.Price</td>
+                                    <td>@orderdetails.Purchase_Price</td>
+                                    <td>@orderdetails.Sold_Price</td>
+                                    <td>@orderdetails.Quantity</td>
                                 </tr>
                             }
-                        <tbody>
+                        </tbody>
 
                     </table>
-
                 </div>
 
             </div>

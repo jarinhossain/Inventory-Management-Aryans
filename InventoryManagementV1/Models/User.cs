@@ -22,6 +22,8 @@ namespace InventoryManagementV1.Models
         public string Address { get; set; }
         public Nullable<int> Job_Id { get; set; }
         public Nullable<System.DateTime> Hired_Date { get; set; }
+        public string Voter_Id { get; set; }
+        public string Image_Path { get; set; }
     
         public virtual Job Job { get; set; }
     }
