@@ -1,4 +1,7 @@
-﻿body {
-  
+﻿
+  #soldquantity {
+   float: left;
+   width: 10%;
+}
       
- }
+ 

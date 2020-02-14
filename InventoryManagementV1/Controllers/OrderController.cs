@@ -31,35 +31,47 @@ namespace InventoryManagementV1.Controllers
         [HttpPost]
         public JsonResult CustomerSearch(String Mobile1)
         {
+            
            Customer customerDB = (from cus in db.Customers
                                    where cus.Mobile1 == Mobile1
                                   select cus).FirstOrDefault();
-            return Json(customerDB,JsonRequestBehavior.AllowGet);
+           
+                return Json(customerDB, JsonRequestBehavior.AllowGet);
+            
+               
         }
         [HttpPost]
         public JsonResult ProductSearch(string Product_No)
         {
             /// method 1
+            /// 
             Product productDB = (from pro in db.Products
                                  where pro.Product_No == Product_No
                                  select pro).FirstOrDefault();
 
-            List<ProductQuantityMap> quantity = (from pro in db.ProductQuantityMaps
-                                                 where pro.Product_Id == productDB.Id
-                                                 select pro)
-                                                  .Include("Material")
-                                                   .Include("Category")
-                                                    .Include("SizeGroup")
-                                                 .Include("Color")
+            if (productDB != null)
+            {
+                List<ProductQuantityMap> quantity = (from pro in db.ProductQuantityMaps
+                                                     where pro.Product_Id == productDB.Id
+                                                     select pro)
+                                                 .Include("Material")
+                                                  .Include("Category")
+                                                   .Include("SizeGroup")
+                                                .Include("Color")
 
-                                                 .ToList();
+                                                .ToList();
 
-            string json = JsonConvert.SerializeObject(quantity, Formatting.Indented,
-                new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-            return Json(json, JsonRequestBehavior.AllowGet);
+                string json = JsonConvert.SerializeObject(quantity, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                return Json(json, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("error", JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
@@ -70,8 +82,8 @@ namespace InventoryManagementV1.Controllers
                 ProductQuantityMap pro = (from p in db.ProductQuantityMaps
                                           where p.Id == item.Product_Quantity_Id
                                           select p).FirstOrDefault();
-                pro.Quantity = pro.Quantity - item.Quantity;
-                
+             
+                    pro.Quantity = pro.Quantity - item.Quantity;
               
             }
             order.Order_Date = DateTime.Now;

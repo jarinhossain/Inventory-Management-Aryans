@@ -34,6 +34,10 @@
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_Product" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_ProductQuantityMap_SizeGroup" ManuallyRouted="false" />
         <AssociationConnector Association="InventoryManagementModel.FK_OrderDetails_ProductQuantityMap" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Payment" Width="1.5" PointX="10.5" PointY="6.5" />
+        <EntityTypeShape EntityType="InventoryManagementModel.Supplier" Width="1.5" PointX="7.375" PointY="0.75" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Payment_Customer" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Payment_Order" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

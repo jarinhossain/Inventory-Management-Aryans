@@ -40,5 +40,7 @@ namespace InventoryManagementV1.Models
         public virtual DbSet<ProductQuantityMap> ProductQuantityMaps { get; set; }
         public virtual DbSet<SizeGroup> SizeGroups { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
     }
 }
