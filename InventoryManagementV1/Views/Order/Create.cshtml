@@ -48,11 +48,11 @@
                         <tr class="info">
                             <th>Material</th>
                             <th>Category</th>
-                            <th>Size Group</th>
+                            <th>Size</th>
                             <th>Color</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>A.Quantity</th>
+                            <th>Add Quantity</th>
                             <th>S.Price</th>
                             <th>Option</th>
                         </tr>
@@ -160,8 +160,9 @@
                      + '<td>' + color + '</td>'
                     + '<td>' + quantity + '</td>'
                      + '<td>' + price + '</td>'
-                     + '<td>' + '<input class="form-control" id="soldquantity" type="text"/>' + '</td>'
-                     + '<td>' + '<input class="form-control" id="soldprice" type="text"/>' + '</td>'
+                     + '<td>' + '<input class="form-control" style="width:60px;display:inline;padding:4px" id="soldquantityDozens" type="text"/>'
+                     + " / " + '<input class="form-control"  style="width:60px;display:inline" id="soldquantityRetails" type="text"/>' + '</td>'
+                     + '<td>' + '<input class="form-control" style="width:90px;display:inline" id="soldprice" type="text"/>' + '</td>'
                         + '<td>' + '<button id="' + editButtonId + '" class="btn btn-primary btn-sm productQuantityDelete">Delete</button>' + '</td>'
                + '</tr>';
                     $("#ProductSaleTable> tbody:last-child").append(row);
@@ -171,90 +172,92 @@
                
             });
             $("#SearchCustomer").click(function () {
-                event.preventDefault();
 
-                $.ajax({
-                    url: "/Order/CustomerSearch",
-                    type: "POST",
-                    data:
-                   {
-                       // Id:$("#Id").val(),
-                       Mobile1: $("#Mobile1").val()
-                   },
-                    success: function (data) {
-                        console.log(data);
-                        $('#name').text(data.Customer_Name);
-                        $('#address').text(data.Address);
-                        $('#customerId').val(data.Id);
-                        resetfunction();
-                    },
-                    error: function (data) {
-                        alert(data)
-                    },
-
-                })
-            });
-            $("#ProductNoSearch").click(function () {
-                event.preventDefault();
-
-                $.ajax({
-                    url: "/Order/ProductSearch",
-                    type: "POST",
-                    data:
-                   {
-                       // Id:$("#Id").val(),
-                       Product_No: $("#Product_No").val()
-                   },
-                    success: function (data) {
-                       
-                        var jsonObject = JSON.parse(data); // convert json string to json object
-                        console.log(jsonObject);
-                        var rowList = '';
-                        $("#productQuantityTable > tbody").empty();//erase all rows from tbody.
-                        for (i = 0; i < jsonObject.length;i++)
-                        {
-                            console.log(jsonObject[i]);
-                            var singleRow = '<tr>'
-                             + '<td>' + jsonObject[i].Material.Material_Name + '</td>'
-                              + '<td>' + jsonObject[i].Category.Category_Name + '</td>'
-                               + '<td>' + jsonObject[i].SizeGroup.Size_Group_Range + '</td>'
-                             + '<td>' + jsonObject[i].Color.Color_Name + '</td>'
-                              + '<td>' + jsonObject[i].Quantity + '</td>'
-                               + '<td>' + jsonObject[i].Price + '</td>'
-                             + '<td>' + '<button id="'+jsonObject[i].Id+'" class="btn btn-primary btn-sm chooseBtn">Choose</button>' + '</td>'
-                             + '</tr>';
-                            rowList = rowList + singleRow;
-                        }
-
-                        $("#productQuantityTable > tbody:last-child").append(rowList);
-                       
-                      
-                    },
-                    error: function (data) {
-                        alert(data)
-                    },
-
-                })
-            });
-            $("#SaveBtn").click(function () {
-              
-                if ($("#soldquantity").val() == "" || $("#soldquantity").val() <= '0') {
+                if ($("#Mobile1").val() == "") {
                     event.preventDefault();
-                    swal("Failed", "Invalid Sold Quantity", "error").then(function () {
-                        $("#soldquantity").focus();
-                    });
-                }
-
-                else if ($("#soldprice").val() == "" || $("#soldprice").val() <= '0') {
-                    event.preventDefault();
-                    swal("Failed", "Invalid Sold Price", "error").then(function () {
-                        $("#soldprice").focus();
+                    swal("Failed", "Mobile1 No is required", "error").then(function () {
+                        $("#Mobile1").focus();
                     });
                 }
                 else {
                     event.preventDefault();
+
+                    $.ajax({
+                        url: "/Order/CustomerSearch",
+                        type: "POST",
+                        data:
+                       {
+                           // Id:$("#Id").val(),
+                           Mobile1: $("#Mobile1").val()
+                       },
+                        success: function (data) {
+                            console.log(data);
+                            $('#name').text(data.Customer_Name);
+                            $('#address').text(data.Address);
+                            $('#customerId').val(data.Id);
+                            resetfunction();
+                        },
+                        error: function (data) {
+                            swal("Failed", "Customer Mobile Number is not Exist", "error")
+                        },
+
+                    })
+                }
+              
+            });
+            $("#ProductNoSearch").click(function () {
+              
+                    event.preventDefault();
+                    $.ajax({
+                        url: "/Order/ProductSearch",
+                        type: "POST",
+                        data:
+                       {
+                           // Id:$("#Id").val(),
+                           Product_No: $("#Product_No").val()
+                       },
+                        success: function (data) {
+                            if (data == "error") {
+                                swal("Failed", "Product No not found", "error");
+                            }
+                            else {
+                                var jsonObject = JSON.parse(data); // convert json string to json object
+                                console.log(jsonObject);
+                                var rowList = '';
+                                $("#productQuantityTable > tbody").empty();//erase all rows from tbody.
+                                for (i = 0; i < jsonObject.length; i++) {
+                                    console.log(jsonObject[i]);
+                                    var singleRow = '<tr>'
+                                     + '<td>' + jsonObject[i].Material.Material_Name + '</td>'
+                                      + '<td>' + jsonObject[i].Category.Category_Name + '</td>'
+                                       + '<td>' + jsonObject[i].SizeGroup.Size_Group_Range + '</td>'
+                                     + '<td>' + jsonObject[i].Color.Color_Name + '</td>'
+                                      + '<td>' + jsonObject[i].Quantity + '</td>'
+                                       + '<td>' + jsonObject[i].Price + '</td>'
+                                     + '<td>' + '<button id="' + jsonObject[i].Id + '" class="btn btn-primary btn-sm chooseBtn">Choose</button>' + '</td>'
+                                     + '</tr>';
+                                    rowList = rowList + singleRow;
+                                }
+
+                                $("#productQuantityTable > tbody:last-child").append(rowList);
+
+                            }
+                         
+
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+               
+            });
+            $("#SaveBtn").click(function () {
+          
+                    event.preventDefault();
                     //parse table
                     var productQuantityArray = [];
+                    var isValid = true;
                     var trList = $('#ProductSaleTable > tbody').find('tr');
 
                     $(trList).each(function (i, el) {
@@ -262,56 +265,88 @@
 
                         //input field +id select.
 
-                        var quantityInputField = $(tds).eq(6).find("input")[0];
+                        var quantityDozensInputField = $(tds).eq(6).find("input")[0];
+                        var quantityRetailsInputField = $(tds).eq(6).find("input")[1];
                         var priceInputField = $(tds).eq(7).find("input")[0];// get first input field in td
                         var PurchasePrice = $(tds).eq(5).text();
                         var DeleteBtnId = $(tds).eq(8).find("button")[0];
+                        var ExistingQuantity = $(tds).eq(4).text().trim();//existing data set kra hoise
 
 
                         //input + id assign 
-                        var soldQuantity = $(quantityInputField).val();  // get input field value
+                        var soldDozensQuantity = parseInt($(quantityDozensInputField).val());  // get input field value
+                        var soldRetailsQuantity = parseInt($(quantityRetailsInputField).val());
+                        var SoldQuantity = (soldDozensQuantity * 12) + soldRetailsQuantity;
                         var soldprice = $(priceInputField).val();
-
                         var ProductQuantityId = $(DeleteBtnId).attr('id');
 
+                        if (($(quantityDozensInputField).val() == "" || $(quantityDozensInputField).val() == null)
+                            && ($(quantityRetailsInputField).val() == "" || $(quantityRetailsInputField).val() == null))
+                        {
+                            isValid = false;
+                            swal("failed", "Sold quantity is not valid", "error");
+                        }
+                       else if (soldDozensQuantity <= 0 || soldRetailsQuantity <= 0) {
+                            isValid = false;
+                            swal("failed", "Sold quantity can't not be negative", "error");
+                        }
+                        else if (SoldQuantity > ExistingQuantity)
+                        {
+                            isValid = false;
+                            swal("failed", "Sold Quantity can not be greater than ExistingQuantity", "error");
+                        }
+                       
+                        else if (SoldQuantity <= 0)
+                        {
+                            isValid = false;
+                            swal("failed", "Sold Quantity can't be negaitve", "error");
+                        }
+                      else if (soldprice == "" || soldprice == null || soldprice <= 0) {
+                          isValid = false;
+                          swal("failed", "Sold Proce is not valid", "error");
+                      }
+                        else {
 
-                        var obj = {
-                            Quantity: soldQuantity,
-                            Sold_Price: soldprice,
-                            Purchase_Price: PurchasePrice,
-                            Product_Quantity_Id: ProductQuantityId,
-                        };
+                            var obj = {
+                                Quantity: SoldQuantity,
+                                Sold_Price: soldprice,
+                                Purchase_Price: PurchasePrice,
+                                Product_Quantity_Id: ProductQuantityId,
+                            };
 
-                        productQuantityArray.push(obj);
+                            productQuantityArray.push(obj);
+                            
+                        }
                     })
+
                     console.log(productQuantityArray);
+                    if (isValid == true) {
 
-                    $.ajax({
-                        url: "/Order/OrderCreate",
-                        type: "post",
-                        data:
-                       {
-                           Customer_Id: $('#customerId').val(),
-                           orderDetails: productQuantityArray,
-                       },
-                        success: function (data) {
-                            if (data == "true") {
-                                swal("success", "successfully saved", "success").then(function () {
-                                    location.reload();//full page load using jquery then all data reset from page.
-                                })
-                            }
-                            else
-                                swal("failed", data, "error");
-                            resetfunction();
-                        },
-                        error: function (data) {
-                            alert(data)
-                        },
+                        $.ajax({
+                            url: "/Order/OrderCreate",
+                            type: "post",
+                            data:
+                           {
+                               Customer_Id: $('#customerId').val(),
+                               orderDetails: productQuantityArray,
+                           },
+                            success: function (data) {
+                                if (data == "true") {
+                                    swal("success", "successfully saved", "success").then(function () {
+                                        location.reload();//full page load using jquery then all data reset from page.
+                                    })
+                                }
+                                else
+                                    swal("failed", data, "error");
+                                resetfunction();
+                            },
+                            error: function (data) {
+                                alert(data)
+                            },
 
-                    })
-                }
-              
-
+                        })
+                    }
+               
             });
           
         });

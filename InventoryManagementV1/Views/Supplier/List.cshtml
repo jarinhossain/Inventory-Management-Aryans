@@ -1,4 +1,4 @@
-﻿@model List<InventoryManagementV1.Models.Order>
+﻿@model List<InventoryManagementV1.Models.Supplier>
 @{
     Layout = "~/Views/Shared/layout.cshtml";
 }
@@ -22,11 +22,11 @@
                 <div class="box">
                     <div class="box-header">
                         <div class="col-md-11 box-header">
-                            <h3 class="box-title">Order List</h3>
+                            <h3 class="box-title">Supplier List</h3>
                         </div>
 
                         <div class="col-md-1">
-                            <a href="~/Order/Create" class="btn btn-primary btn-sm">Add</a>
+                            <a href="~/Supplier/Create" class="btn btn-primary btn-sm">Add</a>
                         </div>
 
                     </div>
@@ -35,28 +35,35 @@
                         <table id="example1" class="table table-bordered table-hover table-striped">
                             <thead>
                                 <tr class="info">
-                                    <th>Order Date</th>
-                                    <th>Customer</th>
+                                    <th>Company Name</th>
+                                    <th>Company Address</th>
+                                    <th>Company Mobile</th>
+                                    <th>Contact Name</th>
+                                    <th>Contact Person Number</th>
+                                    <th>Contact Person Address</th>
+                                    <th>Email</th>
+                                    <th>Website</th>
                                     <th>Option</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (InventoryManagementV1.Models.Order order in (IEnumerable<InventoryManagementV1.Models.Order>)Model)
+                                @foreach (InventoryManagementV1.Models.Supplier supplier in (IEnumerable<InventoryManagementV1.Models.Supplier>)Model)
                                 {
                                     <tr>
+                                        <td>@supplier.Company_Name</td>
+                                        <td>@supplier.Company_Address</td>
+                                        <td>@supplier.Company_Mobile</td>
+                                        <td>@supplier.Contact_Name</td>
+                                        <td>@supplier.Contact_Person_Number</td>
+                                        <td>@supplier.Contact_Person_Address</td>
+                                        <td>@supplier.Email</td>
+                                        <td>@supplier.Website</td>
                                         <td>
-                                            @order.Order_Date
+                                            <a href="~/Supplier/Edit?id=@supplier.Id" class="btn btn-primary btn-sm">Edit</a>
+                                            <a href="~/Supplier/Details?id=@supplier.Id" class="btn btn-primary btn-sm">Details</a>
+
                                         </td>
-                                        <td>
-                                            @if (@order.Customer_Id != null)
-                                            {
-                                                @order.Customer.Customer_Name
-                                            }
-                                        </td>
-                                        <td>
-                                            <a href="~/Order/Details?id=@order.Id" class="btn btn-primary btn-sm">Details</a>
-                                           
-                                        </td>
+
                                     </tr>
                                 }
                             </tbody>

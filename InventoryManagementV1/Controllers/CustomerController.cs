@@ -79,8 +79,8 @@ namespace InventoryManagementV1.Controllers
         {
 
 
-            DBContext DB = new DBContext();
-            Customer customer = (from u in DB.Customers
+            DBContext db = new DBContext();
+            Customer customer = (from u in db.Customers
                                where u.Id == id
                                select u).FirstOrDefault();
 

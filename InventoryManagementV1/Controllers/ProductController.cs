@@ -99,6 +99,8 @@ namespace InventoryManagementV1.Controllers
             db.SaveChanges();
             return Json(productquantity.Id, JsonRequestBehavior.AllowGet);
         }
+
+        //Product Field Update(get)
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -115,6 +117,7 @@ namespace InventoryManagementV1.Controllers
                          select po).FirstOrDefault();
             return View(product);
         }
+        //Product Field Update(Post)
         [HttpPost]
         public JsonResult Edit(Product product)
         {

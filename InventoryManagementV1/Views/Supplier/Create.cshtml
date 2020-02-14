@@ -1,0 +1,193 @@
+﻿@model InventoryManagementV1.Models.Supplier
+@{
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+<!DOCTYPE html>
+<section class="content-header"></section>
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Supplier Create</h3>
+                </div>
+                <!-- /.box-header -->
+
+                @using (Html.BeginForm("Create", "Supplier", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Company Name<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Company_Name, new { @Class = "form-control", @placeholder = "Company Name" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Company Address<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextAreaFor(m => m.Company_Address, new { @Class = "form-control", @placeholder = "Company Address" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Company Mobile<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Company_Mobile, new { @Class = "form-control", @placeholder = "Company Mobile" })
+                            </div>
+                        </div>
+                   
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Contact Name<span style="color:red;">*</span><span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Contact_Name, new { @Class = "form-control", @placeholder = "Contact Name" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Contact Person Number<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Contact_Person_Number, new { @Class = "form-control", @placeholder = "Contact Person Number" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Contact Person Address<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextAreaFor(m => m.Contact_Person_Address, new { @Class = "form-control", @placeholder = "Contact Person Address" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Email<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Email, new { @Class = "form-control", @placeholder = "Email" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Website<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(m => m.Website, new { @Class = "form-control", @placeholder = "Website" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5">
+                                <input type="submit" value="Save" class="btn btn-info" />
+                                <input type="submit" value="Reset" id="reset" class="btn btn-info" />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+            <!-- /.box -->
+
+        </div>
+        <!--/.col (left) -->
+    </div>
+    <!-- /.row -->
+</section>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                if ($("#Company_Name").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Company Name is required", "error").then(function () {
+                        $("#Company_Name").focus();
+                    });
+                }
+                else if ($("#Company_Address").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Company Address is required", "error").then(function () {
+                        $("#Company_Address").focus();
+                    });
+                }
+                else if ($("#Company_Mobile").val() == "" || $('#Company_Mobile').val().length != 11) {
+                    event.preventDefault();
+                    swal("Failed", "Company Mobile is required", "error").then(function () {
+                        $("#Company_Mobile").focus();
+                    });
+                }
+                else if ($("#Contact_Name").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Contact Name is required", "error").then(function () {
+                        $("#Contact_Name").focus();
+                    });
+                }
+                else if ($("#Contact_Person_Number").val() == "" || $('#Contact_Person_Number').val().length != 11) {
+                    event.preventDefault();
+                    swal("Failed", "Contact Person Number is required", "error").then(function () {
+                        $("#Contact_Person_Number").focus();
+                    });
+                }
+                else if ($("#Contact_Person_Address").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Contact Person Address is required", "error").then(function () {
+                        $("#Contact_Person_Address").focus();
+                    });
+                }
+                else if ($("#Email").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Email is required", "error").then(function () {
+                        $("#Email").focus();
+                    });
+                }
+                else if ($("#Website").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Website is required", "error").then(function () {
+                        $("#Website").focus();
+                    });
+                }
+                else {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "/Supplier/Create",
+                        type: "POST",
+                        data:
+                       {
+                           Company_Name: $("#Company_Name").val(),
+                           Company_Address: $("#Company_Address").val(),
+                           Company_Mobile: $("#Company_Mobile").val(),
+                           Contact_Name: $("#Contact_Name").val(),
+                           Contact_Person_Number: $("#Contact_Person_Number").val(),
+                           Contact_Person_Address: $("#Contact_Person_Address").val(),
+                           Email: $("#Email").val(),
+                           Website: $("#Website").val()
+
+                       },
+                        success: function (data) {
+                            if (data == "true")
+                                swal("Success", "Successfully Saved", "success");
+                            else
+                                swal("Failed", data, "error");
+                            resetfunction();
+                        },
+                        error: function (data) {
+                            alert(data)
+                        },
+
+                    })
+                }
+
+            });
+            function resetfunction() {
+                $("#Company_Name").val("");
+                $("#Company_Address").val("");
+                $("#Company_Mobile").val("");
+                $("#Contact_Name").val("");
+                $("#Contact_Person_Number").val("");
+                $("#Contact_Person_Address").val("");
+                $("#Email").val("");
+                $("#Website").val("")
+            }
+            $("#reset").click(function () {
+                resetFunction();
+            });
+        });
+    </script>
+}

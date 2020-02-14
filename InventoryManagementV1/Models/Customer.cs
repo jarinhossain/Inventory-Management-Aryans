@@ -18,6 +18,7 @@ namespace InventoryManagementV1.Models
         public Customer()
         {
             this.Orders = new HashSet<Order>();
+            this.Payments = new HashSet<Payment>();
         }
     
         public int Id { get; set; }
@@ -37,5 +38,7 @@ namespace InventoryManagementV1.Models
         public virtual Gender Gender { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }
