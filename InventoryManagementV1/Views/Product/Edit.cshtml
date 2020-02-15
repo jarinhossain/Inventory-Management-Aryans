@@ -103,12 +103,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Price<span style="color:red;">*</span></label>
+                            <label class="control-label col-md-3">Purchase Price<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextBox("Price", null, new { @Class = "form-control", @placeholder = "price" })
                             </div>
                         </div>
-                       
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Selling Price<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.TextBox("Selling_Price", null, new { @Class = "form-control", @placeholder = "Selling price" })
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-md-3">
                                
@@ -134,7 +139,8 @@
                             <th>Size Group</th>
                             <th>Color</th>
                             <th>Quantity</th>
-                            <th>Price</th>
+                            <th>Purchase Price</th>
+                            <th>Selling Price</th>
                             <th>Option</th>
                         </tr>
                     </thead>
@@ -168,6 +174,7 @@
                                 </td>
                                 <td>@product.Quantity</td>
                                 <td>@product.Price</td>
+                                <td>@product.Selling_Price</td>
                                 <td>
                                     <button id="@product.Id" class="btn btn-primary btn-sm productQuantityEdit">Edit</button>
                                 </td>
@@ -233,6 +240,12 @@
                         $("#Price").focus();
                     });
                 }
+                else if ($("#Selling_Price").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Selling Price is required", "error").then(function () {
+                        $("#Selling_Price").focus();
+                    });
+                }
                 else {
                     event.preventDefault();
                     $.ajax({
@@ -247,6 +260,7 @@
                            Color_Id: $("#Color_Id").val(),
                            Quantity: $("#Quantity").val(),
                            Price: $("#Price").val(),
+                           Selling_Price: $("#Selling_Price").val(),
                            //  productQuantityList: productQuantityArray
                        },
                         success: function (data) {
@@ -271,6 +285,7 @@
                            + '<td>' + $('#Color_Id option:selected').text() + '</td>'
                           + '<td>' + $('#Quantity').val() + '</td>'
                            + '<td>' + $('#Price').val() + '</td>'
+                            + '<td>' + $('#Selling_Price').val() + '</td>'
                               + '<td>' + '<button id="' + productQuantityId + '" class="btn btn-primary btn-sm productQuantityEdit">Edit</button>' + '</td>'
                      + '</tr>';
                         $("#productQuantityTable > tbody:last-child").append(row);
@@ -324,6 +339,12 @@
                         $("#Price").focus();
                     });
                 }
+                else if ($("#Selling_Price").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Selling Price is required", "error").then(function () {
+                        $("#Selling_Price").focus();
+                    });
+                }
                 else {
                     var trList = $('#productQuantityTable > tbody').find('tr');
                     var hiddenFieldValue = $('#productQuantityHidden').val(); // hidden id of product quantity map
@@ -331,7 +352,7 @@
                     $(trList).each(function (i, el) {
                         var tds = $(this).find('td');
 
-                        var editButton = $(tds).eq(6).find("button")[0]; // get first input field in td
+                        var editButton = $(tds).eq(7).find("button")[0]; // get first input field in td
                         var editButtonId = $(editButton).attr('id'); // get edit button id
 
                         if (editButtonId == hiddenFieldValue) {
@@ -341,6 +362,7 @@
                             var color = $('#Color_Id option:selected').text();
                             var quantity = $("#Quantity").val();
                             var price = $("#Price").val();
+                            var sellingprice = $("#Selling_Price").val();
 
                             $(tds).eq(0).text(material);
                             $(tds).eq(1).text(category);
@@ -348,6 +370,7 @@
                             $(tds).eq(3).text(color);
                             $(tds).eq(4).text(quantity);
                             $(tds).eq(5).text(price);
+                            $(tds).eq(6).text(sellingprice);
                         }
                     });
 
@@ -364,6 +387,7 @@
                            Color_Id: $("#Color_Id").val(),
                            Quantity: $("#Quantity").val(),
                            Price: $("#Price").val(),
+                           Selling_Price: $("#Selling_Price").val(),
                            //  productQuantityList: productQuantityArray
                        },
                         success: function (data) {
@@ -400,7 +424,8 @@
                 var color = $(tds).eq(3).text().trim();
                 var quantity = $(tds).eq(4).text().trim();
                 var price = $(tds).eq(5).text().trim();
-                var editButton = $(tds).eq(6).find("button")[0];
+                var sellingprice = $(tds).eq(6).text().trim();
+                var editButton = $(tds).eq(7).find("button")[0];
                 var editButtonId = $(editButton).attr('id'); // get button id 
 
                 // set select tag's option by text
@@ -410,6 +435,7 @@
                 $("#Color_Id option:contains(" + color + ")").prop('selected', true);
                 $("#Quantity").val(quantity);//set value by html id
                 $("#Price").val(price);
+                $("#Selling_Price").val(sellingprice);
 
                 $('#productQuantityHidden').val(editButtonId)
             });
@@ -420,6 +446,7 @@
                 $("#Color_Id").val("");
                 $("#Quantity").val("");
                 $("#Price").val("");
+                $("#Selling_Price").val("");
                 $("#productQuantityHidden").val("");
             }
         });

@@ -8,7 +8,7 @@
 <section class="content">
     <div class="row">
         <!-- left column -->
-        <div class="col-md-6">
+        <div class="col-md-7">
             <!-- general form elements -->
             <div class="box box-primary">
               
@@ -51,8 +51,8 @@
                             <th>Size</th>
                             <th>Color</th>
                             <th>Quantity</th>
-                            <th>Price</th>
                             <th>Add Quantity</th>
+                            <th>P.Price</th>
                             <th>S.Price</th>
                             <th>Option</th>
                         </tr>
@@ -77,7 +77,7 @@
             <!-- /.box -->
 
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <!-- general form elements -->
             <div class="box box-primary">
 
@@ -108,10 +108,11 @@
                         <tr class="info">
                             <th>Material</th>
                             <th>Category</th>
-                            <th>Size Group</th>
+                            <th>Size</th>
                             <th>Color</th>
                             <th>Quantity</th>
-                            <th>Price</th>
+                            <th>P.Price</th>
+                            <th>S.Price</th>
                             <th>Option</th>
                         </tr>
                     </thead>
@@ -143,14 +144,15 @@
                 var color = $(tds).eq(3).text().trim();
                 var quantity = $(tds).eq(4).text().trim();
                 var price = $(tds).eq(5).text().trim();
-                var editButton = $(tds).eq(6).find("button")[0];
+                var sellingprice = $(tds).eq(6).text().trim();
+                var editButton = $(tds).eq(7).find("button")[0];
                 var editButtonId = $(editButton).attr('id'); // get button id 
                 //$("#ProductSaleTable").find("tr").click(function() {
                   
                 //    var productQuantity = $(this).closest('tr').find("#productquantityid").attr(id);
                 //});
                 //console.log(productQuantity);
-                //if (productQuantity == editButtonId)
+                //if (productQuantity == editButtonId) 
                 
                     var row = '<tr>'
 
@@ -159,10 +161,10 @@
                     + '<td>' + SizeGroupRange + '</td>'
                      + '<td>' + color + '</td>'
                     + '<td>' + quantity + '</td>'
+                      + '<td>' + '<input class="form-control" value="0" style="width:60px;display:inline;padding:4px" id="soldquantityDozens" type="text"/>'
+                     + " / " + '<input class="form-control" value="0" style="width:60px;display:inline" id="soldquantityRetails" type="text"/>' + '</td>'
                      + '<td>' + price + '</td>'
-                     + '<td>' + '<input class="form-control" style="width:60px;display:inline;padding:4px" id="soldquantityDozens" type="text"/>'
-                     + " / " + '<input class="form-control"  style="width:60px;display:inline" id="soldquantityRetails" type="text"/>' + '</td>'
-                     + '<td>' + '<input class="form-control" style="width:90px;display:inline" id="soldprice" type="text"/>' + '</td>'
+                     + '<td>' + '<input class="form-control" style="width:90px;display:inline" id="soldprice" value="' + sellingprice + '" type="text"/>' + '</td>'
                         + '<td>' + '<button id="' + editButtonId + '" class="btn btn-primary btn-sm productQuantityDelete">Delete</button>' + '</td>'
                + '</tr>';
                     $("#ProductSaleTable> tbody:last-child").append(row);
@@ -234,6 +236,7 @@
                                      + '<td>' + jsonObject[i].Color.Color_Name + '</td>'
                                       + '<td>' + jsonObject[i].Quantity + '</td>'
                                        + '<td>' + jsonObject[i].Price + '</td>'
+                                        + '<td>' + jsonObject[i].Selling_Price + '</td>'
                                      + '<td>' + '<button id="' + jsonObject[i].Id + '" class="btn btn-primary btn-sm chooseBtn">Choose</button>' + '</td>'
                                      + '</tr>';
                                     rowList = rowList + singleRow;
@@ -265,10 +268,10 @@
 
                         //input field +id select.
 
-                        var quantityDozensInputField = $(tds).eq(6).find("input")[0];
-                        var quantityRetailsInputField = $(tds).eq(6).find("input")[1];
+                        var quantityDozensInputField = $(tds).eq(5).find("input")[0];
+                        var quantityRetailsInputField = $(tds).eq(5).find("input")[1];
                         var priceInputField = $(tds).eq(7).find("input")[0];// get first input field in td
-                        var PurchasePrice = $(tds).eq(5).text();
+                        var PurchasePrice = $(tds).eq(6).text();
                         var DeleteBtnId = $(tds).eq(8).find("button")[0];
                         var ExistingQuantity = $(tds).eq(4).text().trim();//existing data set kra hoise
 
@@ -286,7 +289,7 @@
                             isValid = false;
                             swal("failed", "Sold quantity is not valid", "error");
                         }
-                       else if (soldDozensQuantity <= 0 || soldRetailsQuantity <= 0) {
+                       else if (soldDozensQuantity < 0 || soldRetailsQuantity < 0) {
                             isValid = false;
                             swal("failed", "Sold quantity can't not be negative", "error");
                         }
