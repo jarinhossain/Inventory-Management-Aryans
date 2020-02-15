@@ -147,6 +147,7 @@ namespace InventoryManagementV1.Controllers
             productquantityDB.Color_Id = product.Color_Id;
             productquantityDB.Quantity = product.Quantity;
             productquantityDB.Price = product.Price;
+            productquantityDB.Selling_Price = product.Selling_Price;
             productquantityDB.Updated_On = DateTime.Now;
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);

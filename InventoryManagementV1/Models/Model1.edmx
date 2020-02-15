@@ -152,6 +152,7 @@
           <Property Name="Size_Group_Id" Type="int" />
           <Property Name="Product_Id" Type="int" />
           <Property Name="Price" Type="float" />
+          <Property Name="Selling_Price" Type="float" />
           <Property Name="Created_By" Type="int" />
           <Property Name="Created_On" Type="datetime" />
           <Property Name="Updated_By" Type="int" />
@@ -637,6 +638,7 @@
           <NavigationProperty Name="Product" Relationship="Self.FK_ProductQuantityMap_Product" FromRole="ProductQuantityMap" ToRole="Product" />
           <NavigationProperty Name="SizeGroup" Relationship="Self.FK_ProductQuantityMap_SizeGroup" FromRole="ProductQuantityMap" ToRole="SizeGroup" />
           <NavigationProperty Name="OrderDetails" Relationship="InventoryManagementModel.FK_OrderDetails_ProductQuantityMap" FromRole="ProductQuantityMap" ToRole="OrderDetail" />
+          <Property Name="Selling_Price" Type="Double" />
         </EntityType>
         <EntityType Name="SizeGroup">
           <Key>
@@ -1109,6 +1111,7 @@
           <EntitySetMapping Name="ProductQuantityMaps">
             <EntityTypeMapping TypeName="InventoryManagementModel.ProductQuantityMap">
               <MappingFragment StoreEntitySet="ProductQuantityMap">
+                <ScalarProperty Name="Selling_Price" ColumnName="Selling_Price" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Color_Id" ColumnName="Color_Id" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
