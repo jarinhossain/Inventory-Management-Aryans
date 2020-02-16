@@ -83,7 +83,7 @@ namespace InventoryManagementV1.Controllers
                                           where p.Id == item.Product_Quantity_Id
                                           select p).FirstOrDefault();
              
-                    pro.Quantity = pro.Quantity - item.Quantity;
+                 pro.Quantity = pro.Quantity - item.Quantity;
               
             }
             order.Order_Date = DateTime.Now;

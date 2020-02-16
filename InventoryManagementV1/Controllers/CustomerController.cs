@@ -19,6 +19,7 @@ namespace InventoryManagementV1.Controllers
         public ActionResult Create()
         {
             ViewData["GenderList"] = LoadGender();
+            ViewData["CommissionTypeList"] = loadCommissiontype();
             return View();
         }
         [HttpPost]
@@ -33,6 +34,7 @@ namespace InventoryManagementV1.Controllers
         public ActionResult Edit(int id)
         {
             ViewData["GenderList"] = LoadGender();
+            ViewData["CommissionTypeList"] = loadCommissiontype();
             Customer customer = (from us in db.Customers
                                  where us.Id == id
                                  select us).FirstOrDefault();
@@ -48,6 +50,7 @@ namespace InventoryManagementV1.Controllers
             customerdb.Mobile1 = customer.Mobile1;
             customerdb.Mobile2 = customer.Mobile2;
             customerdb.Gender_Id = customer.Gender_Id;
+            customerdb.Commission_Type_Id = customer.Commission_Type_Id;
             customerdb.Address = customer.Address;
             customerdb.Guarantor_Name = customer.Guarantor_Name;
             customerdb.Guarantor_Mobile = customer.Guarantor_Mobile;
@@ -66,6 +69,18 @@ namespace InventoryManagementV1.Controllers
                 gender.Add(new SelectListItem() { Value = item.Id.ToString(), Text = item.Name });
             }
             return gender;
+        }
+        public List<SelectListItem> loadCommissiontype()
+        {
+            DBContext DB = new DBContext();
+            List<CommissionType> Commissiondb = (from coun in DB.CommissionTypes
+                                     select coun).ToList();
+            List<SelectListItem> Commission = new List<SelectListItem>();
+            foreach (var item in Commissiondb)
+            {
+                Commission.Add(new SelectListItem() { Value = item.Id.ToString(), Text = item.Name });
+            }
+            return Commission;
         }
         [HttpGet]
         public ActionResult List()

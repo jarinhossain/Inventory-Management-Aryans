@@ -18,6 +18,7 @@ namespace InventoryManagementV1.Models
         public CommissionType()
         {
             this.Orders = new HashSet<Order>();
+            this.Customers = new HashSet<Customer>();
         }
     
         public int Id { get; set; }
@@ -25,5 +26,7 @@ namespace InventoryManagementV1.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }

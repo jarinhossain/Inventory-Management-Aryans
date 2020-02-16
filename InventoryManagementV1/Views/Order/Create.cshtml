@@ -52,22 +52,23 @@
                             <th>Color</th>
                             <th>Quantity</th>
                             <th>Add Quantity</th>
-                            <th>P.Price</th>
                             <th>S.Price</th>
+                            <th>Total</th>
                             <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
                    
                     </tbody>
-
-                </table>
+           
+</table>
                 <div class="box-body">
                     <div class="form-group">
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-5">
                             <input type="button" value="Save" id="SaveBtn" class="btn btn-info" />
+                            <input type="button" value="Total" id="totalBtn" class="btn btn-info" />
                         </div>
 
                     </div>
@@ -102,7 +103,7 @@
                       
                     </div>
                 }
-
+             
                 <table id="productQuantityTable" class="table table-bordered">
                     <thead>
                         <tr class="info">
@@ -111,7 +112,6 @@
                             <th>Size</th>
                             <th>Color</th>
                             <th>Quantity</th>
-                            <th>P.Price</th>
                             <th>S.Price</th>
                             <th>Option</th>
                         </tr>
@@ -137,15 +137,15 @@
             $("table").on('click', '.chooseBtn', function () {
                 var selectedTr = $(this).closest('tr');
                 var tds = $(selectedTr).find('td');
+            
 
                 var material = $(tds).eq(0).text().trim();
                 var category = $(tds).eq(1).text().trim();
                 var SizeGroupRange = $(tds).eq(2).text().trim();
                 var color = $(tds).eq(3).text().trim();
                 var quantity = $(tds).eq(4).text().trim();
-                var price = $(tds).eq(5).text().trim();
-                var sellingprice = $(tds).eq(6).text().trim();
-                var editButton = $(tds).eq(7).find("button")[0];
+                var sellingprice = $(tds).eq(5).text().trim();
+                var editButton = $(tds).eq(6).find("button")[0];
                 var editButtonId = $(editButton).attr('id'); // get button id 
                 //$("#ProductSaleTable").find("tr").click(function() {
                   
@@ -161,17 +161,32 @@
                     + '<td>' + SizeGroupRange + '</td>'
                      + '<td>' + color + '</td>'
                     + '<td>' + quantity + '</td>'
-                      + '<td>' + '<input class="form-control" value="0" style="width:60px;display:inline;padding:4px" id="soldquantityDozens" type="text"/>'
-                     + " / " + '<input class="form-control" value="0" style="width:60px;display:inline" id="soldquantityRetails" type="text"/>' + '</td>'
-                     + '<td>' + price + '</td>'
-                     + '<td>' + '<input class="form-control" style="width:90px;display:inline" id="soldprice" value="' + sellingprice + '" type="text"/>' + '</td>'
+                      + '<td>' + '<input class="form-control soldquantityDozensClass" value="0" style="width:60px;display:inline;padding:4px" id="soldquantityDozens"   type="text"/>'
+                  
+                     + " / " + '<input class="form-control soldquantityRetailsClass" value="0" style="width:60px;display:inline" id="soldquantityRetails" type="text"/>' + '</td>'
+                  + '<td>' + '<input class="form-control soldpriceClass" style="width:90px;display:inline" disabled="true" id="soldprice" value="' + sellingprice + '" type="text"/>' + '</td>'
+                       + '<td>' + '<label class="totalQuantityClass">0</label>' + '</td>'
+                    
                         + '<td>' + '<button id="' + editButtonId + '" class="btn btn-primary btn-sm productQuantityDelete">Delete</button>' + '</td>'
                + '</tr>';
-                    $("#ProductSaleTable> tbody:last-child").append(row);
-                
-                  
-                
-               
+                    $("#ProductSaleTable > tbody:last-child").append(row);
+
+                    $('.soldquantityDozensClass').change(function () {
+                        var soldquantityDozen = parseInt($(this).val());
+                        var soldQuantityRetails = parseInt($(this).next('input').val());
+                       var soldpriceval = $(this).closest('tr').find('.soldpriceClass').val();//variable er modde val get kra hoise.
+                      
+                       var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
+                        //$(this).closest('tr').find('.totalQuantityClass').val(total);//input field e val set .val()
+                        $(this).closest('tr').find('.totalQuantityClass').text(total);//label e val set .text()
+                    });
+                    $('.soldquantityRetailsClass').change(function () {
+                        var soldQuantityRetails = parseInt($(this).val());
+                        var soldquantityDozen = parseInt($(this).prev('input').val());
+                        var soldpriceval = $(this).closest('tr').find('.soldpriceClass').val();
+                        var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
+                        $(this).closest('tr').find('.totalQuantityClass').text(total);
+                    });
             });
             $("#SearchCustomer").click(function () {
 
@@ -235,7 +250,6 @@
                                        + '<td>' + jsonObject[i].SizeGroup.Size_Group_Range + '</td>'
                                      + '<td>' + jsonObject[i].Color.Color_Name + '</td>'
                                       + '<td>' + jsonObject[i].Quantity + '</td>'
-                                       + '<td>' + jsonObject[i].Price + '</td>'
                                         + '<td>' + jsonObject[i].Selling_Price + '</td>'
                                      + '<td>' + '<button id="' + jsonObject[i].Id + '" class="btn btn-primary btn-sm chooseBtn">Choose</button>' + '</td>'
                                      + '</tr>';
@@ -255,8 +269,41 @@
                     })
                
             });
+            //$("#totalBtn").click(function () {
+            //    //var productQuantityArray = [];
+            //    var trList = $('#ProductSaleTable > tbody').find('tr');
+            //    $(trList).each(function (i, el) {
+            //        var tds = $(this).find('td');
+            //        var total = 0;
+            //        var Totalvalue = parseInt($('td', this).eq(7).text());
+            //        if (!isNaN(value)) {
+            //            total += value;
+            //        }
+            //    });
+            //    $('#ProductSaleTable tfoot td').eq(6).text('Total: ' + total);
+            //    //console.log(productQuantityArray);
+            //    //$('#ProductSaleTable thead th').each(function (i) {
+            //    //    calculateColumn(i);
+            //    //});
+            //    //function calculateColumn(index) {
+            //    //    var total = 0;
+            //    //    $('#ProductSaleTable tr').each(function () {
+            //    //        var value = parseInt($('td', this).eq(7).text());
+            //    //        if (!isNaN(value)) {
+            //    //            total += value;
+            //    //        }
+            //    //    });
+            //    //    $('#ProductSaleTable tfoot td').eq(index).text('Total: ' + total);
+            //    //}
+            //});
             $("#SaveBtn").click(function () {
-          
+                if ($("#Mobile1").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Mobile1 No is required", "error").then(function () {
+                        $("#Mobile1").focus();
+                    });
+                }
+                else {
                     event.preventDefault();
                     //parse table
                     var productQuantityArray = [];
@@ -284,30 +331,27 @@
                         var ProductQuantityId = $(DeleteBtnId).attr('id');
 
                         if (($(quantityDozensInputField).val() == "" || $(quantityDozensInputField).val() == null)
-                            && ($(quantityRetailsInputField).val() == "" || $(quantityRetailsInputField).val() == null))
-                        {
+                            && ($(quantityRetailsInputField).val() == "" || $(quantityRetailsInputField).val() == null)) {
                             isValid = false;
                             swal("failed", "Sold quantity is not valid", "error");
                         }
-                       else if (soldDozensQuantity < 0 || soldRetailsQuantity < 0) {
+                        else if (soldDozensQuantity < 0 || soldRetailsQuantity < 0) {
                             isValid = false;
                             swal("failed", "Sold quantity can't not be negative", "error");
                         }
-                        else if (SoldQuantity > ExistingQuantity)
-                        {
+                        else if (SoldQuantity > ExistingQuantity) {
                             isValid = false;
                             swal("failed", "Sold Quantity can not be greater than ExistingQuantity", "error");
                         }
-                       
-                        else if (SoldQuantity <= 0)
-                        {
+
+                        else if (SoldQuantity <= 0) {
                             isValid = false;
                             swal("failed", "Sold Quantity can't be negaitve", "error");
                         }
-                      else if (soldprice == "" || soldprice == null || soldprice <= 0) {
-                          isValid = false;
-                          swal("failed", "Sold Proce is not valid", "error");
-                      }
+                        else if (soldprice == "" || soldprice == null || soldprice <= 0) {
+                            isValid = false;
+                            swal("failed", "Sold Proce is not valid", "error");
+                        }
                         else {
 
                             var obj = {
@@ -318,7 +362,7 @@
                             };
 
                             productQuantityArray.push(obj);
-                            
+
                         }
                     })
 
@@ -349,6 +393,8 @@
 
                         })
                     }
+                }
+                   
                
             });
           

@@ -46,6 +46,13 @@
 
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3">Commission Type<span style="color:red;">*</span></label>
+                            <div class="col-md-6">
+                                @Html.DropDownList("Commission_Type_Id", (List<SelectListItem>)ViewData["CommissionTypeList"], "Select Commission Type", new { @class = "form-control editor-field", @placeholder = "Select" })
+                            </div>
+
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-md-3">Address<span style="color:red;">*</span></label>
                             <div class="col-md-6">
                                 @Html.TextAreaFor(m => m.Address, new { @Class = "form-control", @placeholder = "Address" })
@@ -107,7 +114,12 @@
                         $("#Mobile1").focus();
                     });
                 }
-            
+                else if ($("#Commission_Type_Id").val() == "") {
+                    event.preventDefault();
+                    swal("Failed", "Commission Type is required", "error").then(function () {
+                        $("#Commission_Type_Id").focus();
+                    });
+                }
                 else if ($("#Address").val() == "") {
                     event.preventDefault();
                     swal("Failed", "Address is required", "error").then(function () {
@@ -125,6 +137,7 @@
                            Mobile1: $("#Mobile1").val(),
                            Mobile2: $("#Mobile2").val(),
                            Gender_Id: $("#Gender_Id").val(),
+                           Commission_Type_Id: $("#Commission_Type_Id").val(),
                            Address: $("#Address").val(),
                            Guarantor_Name: $("#Guarantor_Name").val(),
                            Guarantor_Mobile: $("#Guarantor_Mobile").val(),
@@ -150,7 +163,8 @@
                 $("#Customer_Name").val("");
                 $("#Mobile1").val("");
                 $("#Mobile2").val("");
-                $("#Gender_Id").val("");
+                $("#Gender_Id").val(""); 
+                $("#Commission_Type_Id").val("");
                 $("#Address").val("");
                 $("#Guarantor_Name").val("");
                 $("#Guarantor_Mobile").val("");

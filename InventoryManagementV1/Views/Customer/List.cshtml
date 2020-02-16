@@ -39,6 +39,7 @@
                                     <th>Mobile1</th>
                                     <th>Mobile2</th>
                                     <th>Gender</th>
+                                    <th>Commission Type</th>
                                     <th>Address</th>
                                     <th>Guarantor_Name</th>
                                     <th>Guarantor_Mobile</th>
@@ -58,6 +59,12 @@
                                             @if (@customer.Gender_Id != null)
                                             {
                                                 @customer.Gender.Name
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (@customer.Commission_Type_Id != null)
+                                            {
+                                                @customer.CommissionType.Name
                                             }
                                         </td>
                                         <td>@customer.Address</td>

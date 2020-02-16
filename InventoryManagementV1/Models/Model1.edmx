@@ -41,6 +41,7 @@
           <Property Name="Customer_Name" Type="varchar" MaxLength="50" />
           <Property Name="Mobile1" Type="varchar" MaxLength="20" />
           <Property Name="Gender_Id" Type="int" />
+          <Property Name="Commission_Type_Id" Type="int" />
           <Property Name="Address" Type="varchar" MaxLength="50" />
           <Property Name="Mobile2" Type="varchar" MaxLength="20" />
           <Property Name="Guarantor_Name" Type="varchar" MaxLength="50" />
@@ -194,6 +195,18 @@
           <Property Name="Image_Path" Type="varchar" MaxLength="200" />
           <Property Name="Hired_Date" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Customer_CommissionType">
+          <End Role="CommissionType" Type="Self.CommissionType" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommissionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Commission_Type_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Customer_Gender">
           <End Role="Gender" Type="Self.Gender" Multiplicity="0..1" />
           <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
@@ -404,6 +417,10 @@
           <EntitySet Name="SizeGroup" EntityType="Self.SizeGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customer_CommissionType" Association="Self.FK_Customer_CommissionType">
+            <End Role="CommissionType" EntitySet="CommissionType" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
           <AssociationSet Name="FK_Customer_Gender" Association="Self.FK_Customer_Gender">
             <End Role="Gender" EntitySet="Gender" />
             <End Role="Customer" EntitySet="Customer" />
@@ -496,6 +513,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Order_CommissionType" FromRole="CommissionType" ToRole="Order" />
+          <NavigationProperty Name="Customers" Relationship="InventoryManagementModel.FK_Customer_CommissionType" FromRole="CommissionType" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -525,6 +543,8 @@
           <NavigationProperty Name="Gender" Relationship="Self.FK_Customer_Gender" FromRole="Customer" ToRole="Gender" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Order_Customer" FromRole="Customer" ToRole="Order" />
           <NavigationProperty Name="Payments" Relationship="InventoryManagementModel.FK_Payment_Customer" FromRole="Customer" ToRole="Payment" />
+          <Property Name="Commission_Type_Id" Type="Int32" />
+          <NavigationProperty Name="CommissionType" Relationship="InventoryManagementModel.FK_Customer_CommissionType" FromRole="Customer" ToRole="CommissionType" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -902,6 +922,10 @@
             <End Role="Order" EntitySet="Orders" />
             <End Role="Payment" EntitySet="Payments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Customer_CommissionType" Association="InventoryManagementModel.FK_Customer_CommissionType">
+            <End Role="CommissionType" EntitySet="CommissionTypes" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_OrderDetails_ProductQuantityMap">
           <End Type="InventoryManagementModel.ProductQuantityMap" Role="ProductQuantityMap" Multiplicity="0..1" />
@@ -969,6 +993,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customer_CommissionType">
+          <End Type="InventoryManagementModel.CommissionType" Role="CommissionType" Multiplicity="0..1" />
+          <End Type="InventoryManagementModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommissionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="Commission_Type_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1010,6 +1046,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="InventoryManagementModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Commission_Type_Id" ColumnName="Commission_Type_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Customer_Name" ColumnName="Customer_Name" />
                 <ScalarProperty Name="Mobile1" ColumnName="Mobile1" />
