@@ -62,13 +62,92 @@
                     </tbody>
            
 </table>
+               
+                <div class="form-group">
+                    <div class="col-md-9">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="control-label" style="font-size:20px" id="totallabel">Total</label>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="control-label" style="font-size:20px" id="totalid" value="0"></label>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+                <div class="box-body packagingclass">
+                    <div class="form-group">
+                        <div class="col-md-6">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-7">
+                                <label class="control-label" style="font-size:20px">Packing Charge</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input class="form-control" value="0" style="width:80px;display:inline" type="text" />
+                            </div>
+                         </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6"> </div>
+                        <div class="col-md-6">
+                            <div class="col-md-7">
+                                <label class="control-label" style="font-size:20px;margin-top:10px;">Commission Total</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input class="form-control" value="0" disabled="true" style="width:80px;display:inline;margin-top: 15px;" type="text" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6"> </div>
+                        <div class="col-md-6">
+                            <div class="col-md-7">
+                                <label class="control-label"  style="font-size:20px;margin-top:10px;">Discount</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input class="form-control" value="0" style="width:80px;display:inline;margin-top: 15px;" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6"> </div>
+                        <div class="col-md-6">
+                            <div class="col-md-7">
+                                <label class="control-label" style="font-size:20px;margin-top:10px;">Tax</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input class="form-control" value="0" disabled="true" style="width:80px;display:inline;margin-top: 15px;" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                   <div class="form-group">
+                       <div class="col-md-6"> </div>
+                       <div class="col-md-6"><hr /> </div>
+                  </div>
+                    <div class="form-group">
+                        <div class="col-md-6"> </div>
+                        <div class="col-md-6">
+                            <div class="col-md-7">
+                                <label class="control-label" style="font-size:20px;margin-bottom:15px;">Net Payable</label>
+                            </div>
+                            <div class="col-md-5">
+                                @*<input class="form-control" value="0" style="width:80px;display:inline;margin-top: 15px;" type="text" />*@
+                                <label class="control-label" style="font-size:20px" id="netpayable">0</label>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="box-body">
                     <div class="form-group">
-                        <div class="col-md-3">
+                        <div class="col-md-10">
+
                         </div>
-                        <div class="col-md-5">
-                            <input type="button" value="Save" id="SaveBtn" class="btn btn-info" />
-                            <input type="button" value="Total" id="totalBtn" class="btn btn-info" />
+                        <div class="col-md-1">
+                            <input type="button" style="display:none" value="Save" id="SaveBtn" class="btn btn-primary btn-lg" />
                         </div>
 
                     </div>
@@ -131,10 +210,16 @@
 
     <script>
         $(document).ready(function () {
+            //var netpayable = $("#netpayable").text(0);
+            $("#totallabel").hide();
             $("table").on('click', '.productQuantityDelete', function () {
                 $(this).closest('tr').remove();
             });
             $("table").on('click', '.chooseBtn', function () {
+                $("#totallabel").show();
+                $("#SaveBtn").show();
+                var totaldefaultvalue = $("#totalid").text(0);//default value set
+              
                 var selectedTr = $(this).closest('tr');
                 var tds = $(selectedTr).find('td');
             
@@ -170,6 +255,7 @@
                         + '<td>' + '<button id="' + editButtonId + '" class="btn btn-primary btn-sm productQuantityDelete">Delete</button>' + '</td>'
                + '</tr>';
                     $("#ProductSaleTable > tbody:last-child").append(row);
+                    
 
                     $('.soldquantityDozensClass').change(function () {
                         var soldquantityDozen = parseInt($(this).val());
@@ -178,7 +264,16 @@
                       
                        var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
                         //$(this).closest('tr').find('.totalQuantityClass').val(total);//input field e val set .val()
-                        $(this).closest('tr').find('.totalQuantityClass').text(total);//label e val set .text()
+                       $(this).closest('tr').find('.totalQuantityClass').text(total);//label e val set .text()
+
+                       var trList = $('#ProductSaleTable > tbody').find('tr');
+                       var result = 0;
+                       $(trList).each(function (i, el) {
+                           var tds = $(this).find('td');
+                           var total = parseFloat($(tds).eq(7).text());
+                           result += total;
+                           $("#totalid").text(result);
+                       });
                     });
                     $('.soldquantityRetailsClass').change(function () {
                         var soldQuantityRetails = parseInt($(this).val());
@@ -186,6 +281,14 @@
                         var soldpriceval = $(this).closest('tr').find('.soldpriceClass').val();
                         var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
                         $(this).closest('tr').find('.totalQuantityClass').text(total);
+                        var trList = $('#ProductSaleTable > tbody').find('tr');
+                        var result = 0;
+                        $(trList).each(function (i, el) {
+                            var tds = $(this).find('td');
+                            var total = parseFloat($(tds).eq(7).text());
+                            result += total;
+                            $("#totalid").text(result);
+                        });
                     });
             });
             $("#SearchCustomer").click(function () {
@@ -269,33 +372,7 @@
                     })
                
             });
-            //$("#totalBtn").click(function () {
-            //    //var productQuantityArray = [];
-            //    var trList = $('#ProductSaleTable > tbody').find('tr');
-            //    $(trList).each(function (i, el) {
-            //        var tds = $(this).find('td');
-            //        var total = 0;
-            //        var Totalvalue = parseInt($('td', this).eq(7).text());
-            //        if (!isNaN(value)) {
-            //            total += value;
-            //        }
-            //    });
-            //    $('#ProductSaleTable tfoot td').eq(6).text('Total: ' + total);
-            //    //console.log(productQuantityArray);
-            //    //$('#ProductSaleTable thead th').each(function (i) {
-            //    //    calculateColumn(i);
-            //    //});
-            //    //function calculateColumn(index) {
-            //    //    var total = 0;
-            //    //    $('#ProductSaleTable tr').each(function () {
-            //    //        var value = parseInt($('td', this).eq(7).text());
-            //    //        if (!isNaN(value)) {
-            //    //            total += value;
-            //    //        }
-            //    //    });
-            //    //    $('#ProductSaleTable tfoot td').eq(index).text('Total: ' + total);
-            //    //}
-            //});
+       
             $("#SaveBtn").click(function () {
                 if ($("#Mobile1").val() == "") {
                     event.preventDefault();
