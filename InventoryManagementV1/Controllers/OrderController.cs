@@ -92,6 +92,7 @@ namespace InventoryManagementV1.Controllers
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         public ActionResult List()
         {
