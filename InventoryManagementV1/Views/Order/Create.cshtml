@@ -85,7 +85,7 @@
                                 <label class="control-label" style="font-size:20px">Packing Charge</label>
                             </div>
                             <div class="col-md-5">
-                                <input class="form-control" value="0" style="width:80px;display:inline" type="text" />
+                                <input class="form-control PackagingChargeClass" id="PackagingCharge" value="0" style="width:80px;display:inline" type="text" />
                             </div>
                          </div>
                     </div>
@@ -108,7 +108,7 @@
                                 <label class="control-label"  style="font-size:20px;margin-top:10px;">Discount</label>
                             </div>
                             <div class="col-md-5">
-                                <input class="form-control" value="0" style="width:80px;display:inline;margin-top: 15px;" type="text" />
+                                <input class="form-control discountClass" id="discountId"  value="0" style="width:80px;display:inline;margin-top: 15px;" type="text" />
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-md-5">
                                 @*<input class="form-control" value="0" style="width:80px;display:inline;margin-top: 15px;" type="text" />*@
-                                <label class="control-label" style="font-size:20px" id="netpayable">0</label>
+                                <label class="control-label netpayableClass" style="font-size:20px" id="netpayable">0</label>
 
                             </div>
                         </div>
@@ -210,10 +210,59 @@
 
     <script>
         $(document).ready(function () {
+            function calculateQuantityDozens(thisRef) {
+                var soldquantityDozen = parseInt($(thisRef).val());
+                var soldQuantityRetails = parseInt($(thisRef).next('input').val());
+                var soldpriceval = $(thisRef).closest('tr').find('.soldpriceClass').val();
+                var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
+                $(thisRef).closest('tr').find('.totalQuantityClass').text(total);
+                var trList = $('#ProductSaleTable > tbody').find('tr');
+                var result = 0;
+                $(trList).each(function (i, el) {
+                    var tds = $(this).find('td');
+                    var total = parseFloat($(tds).eq(7).text());
+                    result += total;
+                    $("#totalid").text(result);
+                    $("#netpayable").text(result);
+                });
+            }
+            function calculateQuantityRetails(thisRef) {
+                var soldQuantityRetails = parseInt($(thisRef).val());
+                var soldquantityDozen = parseInt($(thisRef).prev('input').val());
+                var soldpriceval = $(thisRef).closest('tr').find('.soldpriceClass').val();
+                var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
+                $(thisRef).closest('tr').find('.totalQuantityClass').text(total);
+                var trList = $('#ProductSaleTable > tbody').find('tr');
+                var result = 0;
+                $(trList).each(function (i, el) {
+                    var tds = $(this).find('td');
+                    var total = parseFloat($(tds).eq(7).text());
+                    result += total;
+                    $("#totalid").text(result);
+                    $("#netpayable").text(result);
+                });
+            }
             //var netpayable = $("#netpayable").text(0);
             $("#totallabel").hide();
             $("table").on('click', '.productQuantityDelete', function () {
                 $(this).closest('tr').remove();
+                var trList = $('#ProductSaleTable > tbody').find('tr');
+                var result = 0;
+                if (trList.length == 0) {
+                    $("#totalid").text(0);
+                    $("#netpayable").text(0);
+                }
+                else {
+                    $(trList).each(function (i, el) {
+                        var tds = $(this).find('td');
+                        var total = parseFloat($(tds).eq(7).text());
+                        result += total;
+                        $("#totalid").text(result);
+                        $("#netpayable").text(result);
+                    });
+
+                }
+              
             });
             $("table").on('click', '.chooseBtn', function () {
                 $("#totallabel").show();
@@ -258,39 +307,44 @@
                     
 
                     $('.soldquantityDozensClass').change(function () {
-                        var soldquantityDozen = parseInt($(this).val());
-                        var soldQuantityRetails = parseInt($(this).next('input').val());
-                       var soldpriceval = $(this).closest('tr').find('.soldpriceClass').val();//variable er modde val get kra hoise.
-                      
-                       var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
-                        //$(this).closest('tr').find('.totalQuantityClass').val(total);//input field e val set .val()
-                       $(this).closest('tr').find('.totalQuantityClass').text(total);//label e val set .text()
-
-                       var trList = $('#ProductSaleTable > tbody').find('tr');
-                       var result = 0;
-                       $(trList).each(function (i, el) {
-                           var tds = $(this).find('td');
-                           var total = parseFloat($(tds).eq(7).text());
-                           result += total;
-                           $("#totalid").text(result);
-                       });
+                        calculateQuantityDozens(this);
+                       
                     });
                     $('.soldquantityRetailsClass').change(function () {
-                        var soldQuantityRetails = parseInt($(this).val());
-                        var soldquantityDozen = parseInt($(this).prev('input').val());
-                        var soldpriceval = $(this).closest('tr').find('.soldpriceClass').val();
-                        var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
-                        $(this).closest('tr').find('.totalQuantityClass').text(total);
-                        var trList = $('#ProductSaleTable > tbody').find('tr');
-                        var result = 0;
-                        $(trList).each(function (i, el) {
-                            var tds = $(this).find('td');
-                            var total = parseFloat($(tds).eq(7).text());
-                            result += total;
-                            $("#totalid").text(result);
-                        });
+                        calculateQuantityRetails(this);
+                        //var soldQuantityRetails = parseInt($(this).val());
+                        //var soldquantityDozen = parseInt($(this).prev('input').val());
+                        //var soldpriceval = $(this).closest('tr').find('.soldpriceClass').val();
+                        //var total = ((soldquantityDozen * 12) + soldQuantityRetails) * soldpriceval;
+                        //$(this).closest('tr').find('.totalQuantityClass').text(total);
+                        //var trList = $('#ProductSaleTable > tbody').find('tr');
+                        //var result = 0;
+                        //$(trList).each(function (i, el) {
+                        //    var tds = $(this).find('td');
+                        //    var total = parseFloat($(tds).eq(7).text());
+                        //    result += total;
+                        //    $("#totalid").text(result);
+                        //    $("#netpayable").text(result);
+                        //});
                     });
+                    $('.PackagingChargeClass').change(function () {
+                        var packagingcharge = parseFloat($(this).val());
+                        var totalfield = parseFloat($("#totalid").text());
+                        var discount = parseFloat($("#discountId").val());
+                        var netpayabletotal = (packagingcharge + totalfield)-discount;
+                        $("#netpayable").text(netpayabletotal);
+                    });
+                    $('.discountClass').change(function () {
+                        var packagediscount = parseFloat($(this).val());
+                        var totalfield = parseFloat($("#totalid").text());
+                        var packagingcharge = parseFloat($("#PackagingCharge").val());
+                        var netpayabletotal = (packagingcharge + totalfield) - packagediscount;
+                        $("#netpayable").text(netpayabletotal);
+                    });
+
+
             });
+           
             $("#SearchCustomer").click(function () {
 
                 if ($("#Mobile1").val() == "") {
@@ -360,9 +414,7 @@
                                 }
 
                                 $("#productQuantityTable > tbody:last-child").append(rowList);
-
                             }
-                         
 
                         },
                         error: function (data) {
@@ -394,9 +446,9 @@
 
                         var quantityDozensInputField = $(tds).eq(5).find("input")[0];
                         var quantityRetailsInputField = $(tds).eq(5).find("input")[1];
-                        var priceInputField = $(tds).eq(7).find("input")[0];// get first input field in td
-                        var PurchasePrice = $(tds).eq(6).text();
-                        var DeleteBtnId = $(tds).eq(8).find("button")[0];
+                        var priceInputField = $(tds).eq(6).find("input")[0];// get first input field in td
+                        //var PurchasePrice = $(tds).eq(6).text();
+                        var DeleteBtnId = $(tds).eq(8).find("button")[0];//delete button er id ta find krse
                         var ExistingQuantity = $(tds).eq(4).text().trim();//existing data set kra hoise
 
 
@@ -434,12 +486,11 @@
                             var obj = {
                                 Quantity: SoldQuantity,
                                 Sold_Price: soldprice,
-                                Purchase_Price: PurchasePrice,
+                                //Purchase_Price: PurchasePrice,
                                 Product_Quantity_Id: ProductQuantityId,
                             };
 
                             productQuantityArray.push(obj);
-
                         }
                     })
 
@@ -452,6 +503,8 @@
                             data:
                            {
                                Customer_Id: $('#customerId').val(),
+                               Packaging_Charge:$('#PackagingCharge').val(),
+                               Discount: $('#discountId').val(),
                                orderDetails: productQuantityArray,
                            },
                             success: function (data) {
