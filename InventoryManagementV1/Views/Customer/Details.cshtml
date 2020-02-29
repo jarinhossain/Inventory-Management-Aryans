@@ -44,6 +44,15 @@
                                 </td>
                             </tr>
                             <tr class="active">
+                                <td class="text-primary text-right" width="30%">Commission Type: </td>
+                                <td style="font-weight:bold">
+                                    @if (@Model.Commission_Type_Id != null)
+                                    {
+                                        @Model.CommissionType.Name
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="active">
                                 <td class="text-primary text-right" width="30%">Address: </td>
                                 <td style="font-weight:bold">@Model.Address</td>
                             </tr>

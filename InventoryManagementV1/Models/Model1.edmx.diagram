@@ -38,6 +38,7 @@
         <EntityTypeShape EntityType="InventoryManagementModel.Supplier" Width="1.5" PointX="7.375" PointY="0.75" />
         <AssociationConnector Association="InventoryManagementModel.FK_Payment_Customer" />
         <AssociationConnector Association="InventoryManagementModel.FK_Payment_Order" />
+        <AssociationConnector Association="InventoryManagementModel.FK_Customer_CommissionType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
